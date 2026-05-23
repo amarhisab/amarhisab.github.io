@@ -5,21 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>আমার হিসাব — সফটওয়্যার</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDB2CuPdcy3-U2cWbVPwkXLln5nsrjgKRs",
-  authDomain: "amar-hisab-a8966.firebaseapp.com",
-  projectId: "amar-hisab-a8966",
-  storageBucket: "amar-hisab-a8966.firebasestorage.app",
-  messagingSenderId: "638824662407",
-  appId: "1:638824662407:web:870a3da6a699d6eb453f22"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-</script>
 <style>
 :root {
   --bg: #f0f4ff;
@@ -234,7 +219,7 @@ body {
   background: var(--accent-color, var(--accent));
 }
 .stat-label { font-size: 11px; color: #6366f1; margin-bottom: 6px; }
-.stat-value { font-size: 24px; font-weight: 700; color: var(--text); }
+.stat-value { font-size: 30px; font-weight: 800; color: var(--text); }
 .stat-sub { font-size: 11px; color: #6366f1; margin-top: 3px; }
 
 .section-title {
@@ -941,13 +926,14 @@ tr:hover td { background: #eef2ff; }
 
       <!-- ===== RECEIVABLE (বাকি/পাওনাদার) ===== -->
       <div class="page" id="page-receivable">
-        <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;">
+        <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;">
           <input type="text" class="form-control" style="max-width:220px;" placeholder="🔍 নাম/মোবাইল খুঁজুন..." id="recv-search" oninput="renderReceivable()">
           <select class="form-control" style="max-width:200px;" id="recv-company" onchange="renderReceivable()">
             <option value="">সব কোম্পানি</option>
             <option value="0">তানভির সিমেন্ট</option><option value="1">তানভির স্টিল</option>
             <option value="2">সুরমা স্টিল হাউজ</option><option value="3">সুরমা এস এস</option>
           </select>
+          <button class="btn btn-primary" onclick="openManualBakiModal()">+ ম্যানুয়াল বাকি যোগ</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -1440,7 +1426,6 @@ function doLogin() {
     document.getElementById('login-screen').classList.add('hidden');
     errEl.textContent = '';
     applyRoleUI();
-    loadAllFromFirebase();
   } else {
     errEl.textContent = '❌ ভুল ব্যবহারকারীর নাম বা পাসওয়ার্ড!';
     document.getElementById('login-pass').value = '';
@@ -1484,56 +1469,11 @@ const COMPANIES = [
   { name: 'সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম', short: 'সুরমা এস এস', color: '#d97706', cls: 'active-c4' },
 ];
 
-// ===== FIREBASE DATA =====
-// Local cache — এখনো কাজ করবে, Firebase থেকেও লোড হবে
 function loadData(key, def) {
   try { return JSON.parse(localStorage.getItem(key)) || def; } catch { return def; }
 }
-
-// saveData: localStorage + Firebase উভয়তেই সেভ করে
 function saveData(key, val) {
   localStorage.setItem(key, JSON.stringify(val));
-  db.collection('hisab').doc(key).set({ data: JSON.stringify(val) }).catch(e => console.warn('Firebase save error:', e));
-}
-
-// Firebase থেকে সব ডাটা লোড করো
-function loadAllFromFirebase() {
-  const keys = ['memos','purchases','advances','payments','supplierPays','manualStock','recycleBin','customSupplierEntries','customSupplierNames','memoCounter'];
-  
-  // Loading indicator দেখাও
-  document.body.insertAdjacentHTML('beforeend', `
-    <div id="fb-loading" style="position:fixed;inset:0;background:rgba(79,70,229,0.92);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:'Hind Siliguri',sans-serif;">
-      <div style="font-size:40px;margin-bottom:16px;">☁️</div>
-      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">ডাটা লোড হচ্ছে...</div>
-      <div style="font-size:13px;opacity:0.8;">Firebase থেকে সংযুক্ত হচ্ছে</div>
-    </div>
-  `);
-
-  const promises = keys.map(key =>
-    db.collection('hisab').doc(key).get().then(doc => {
-      if (doc.exists) {
-        const val = JSON.parse(doc.data().data);
-        localStorage.setItem(key, JSON.stringify(val));
-      }
-    }).catch(e => console.warn('Firebase load error for', key, e))
-  );
-
-  Promise.all(promises).then(() => {
-    // ডাটা রিফ্রেশ করো
-    memos = loadData('memos', []);
-    purchases = loadData('purchases', []);
-    advances = loadData('advances', []);
-    payments = loadData('payments', []);
-    supplierPays = loadData('supplierPays', []);
-    manualStock = loadData('manualStock', []);
-    recycleBin = loadData('recycleBin', []);
-    customSupplierEntries = loadData('customSupplierEntries', []);
-    customSupplierNames = loadData('customSupplierNames', []);
-    memoCounter = loadData('memoCounter', 1);
-
-    document.getElementById('fb-loading')?.remove();
-    renderPage(currentPage);
-  });
 }
 
 let memos = loadData('memos', []);
@@ -1546,6 +1486,7 @@ let recycleBin = loadData('recycleBin', []);
 let customSupplierEntries = loadData('customSupplierEntries', []);
 let customSupplierNames = loadData('customSupplierNames', []);
 let memoCounter = loadData('memoCounter', 1);
+let manualBakis = loadData('manualBakis', []);
 let currentCompany = 0;
 let currentPage = 'dashboard';
 let stockTab = 0;
@@ -1635,17 +1576,17 @@ function renderDashboard() {
   const totalAdvance = advances.reduce((s,a) => s + (a.amount||0), 0);
 
   const stats = [
-    { label: 'মোট বিক্রয়', value: fmt(totalSale), sub: `${memos.length} টি মেমো`, color: '#2ecc8a' },
-    { label: 'মোট ক্রয়', value: fmt(totalPur), sub: `${purchases.length} টি এন্ট্রি`, color: '#4f8ef7' },
-    { label: 'মোট পাওনা', value: fmt(totalBaki), sub: 'বাকি সংগ্রহ', color: '#e05a5a' },
-    { label: 'মোট আদায়', value: fmt(totalCollected), sub: 'পেমেন্ট কালেকশন', color: '#f0a500' },
-    { label: 'অগ্রিম গ্রাহক', value: fmt(totalAdvance), sub: `${advances.length} জন`, color: '#9b59b6' },
+    { label: 'মোট বিক্রয়', value: fmt(totalSale), sub: `${memos.length} টি মেমো`, color: '#2ecc8a', valueColor: '#059669' },
+    { label: 'মোট ক্রয়', value: fmt(totalPur), sub: `${purchases.length} টি এন্ট্রি`, color: '#4f8ef7', valueColor: '#2563eb' },
+    { label: 'মোট পাওনা', value: fmt(totalBaki), sub: 'বাকি সংগ্রহ', color: '#e05a5a', valueColor: '#dc2626' },
+    { label: 'মোট আদায়', value: fmt(totalCollected), sub: 'পেমেন্ট কালেকশন', color: '#f0a500', valueColor: '#059669' },
+    { label: 'অগ্রিম গ্রাহক', value: fmt(totalAdvance), sub: `${advances.length} জন`, color: '#9b59b6', valueColor: '#7c3aed' },
   ];
 
   document.getElementById('dash-stats').innerHTML = stats.map(s => `
     <div class="stat-card" style="--accent-color:${s.color}">
       <div class="stat-label">${s.label}</div>
-      <div class="stat-value">${s.value}</div>
+      <div class="stat-value" style="color:${s.valueColor || s.color}">${s.value}</div>
       <div class="stat-sub">${s.sub}</div>
     </div>
   `).join('');
@@ -2052,7 +1993,58 @@ function printCurrentMemo() {
     </style>
   </head><body>`);
   win.document.write(html);
-  win.document.write(`<div class="no-print"><button onclick="window.print()" style="padding:10px 28px;background:#1a3a5c;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">🖨️ প্রিন্ট করুন</button></div></body></html>`);
+  win.document.write(`<div class="no-print"><button onclick="window.print()" style="padding:10px 28px;background:#1a3a5c;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">🖨️ প্রিন্ট করুন</button></div>
+<!-- Manual Baki Modal -->
+<div class="modal-overlay" id="manual-baki-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>➕ ম্যানুয়াল বাকি যোগ</h2>
+      <button class="modal-close" onclick="closeModal('manual-baki-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid form-grid-2">
+        <div class="form-group">
+          <label>কোম্পানি</label>
+          <select class="form-control" id="mb-company">
+            <option value="0">তানভির সিমেন্ট</option>
+            <option value="1">তানভির এন্টারপ্রাইজ (স্টিল)</option>
+            <option value="2">সুরমা স্টিল হাউজ</option>
+            <option value="3">সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>তারিখ</label>
+          <input type="date" class="form-control" id="mb-date">
+        </div>
+        <div class="form-group">
+          <label>গ্রাহকের নাম</label>
+          <input type="text" class="form-control" id="mb-customer" placeholder="গ্রাহকের নাম লিখুন">
+        </div>
+        <div class="form-group">
+          <label>মোবাইল নম্বর</label>
+          <input type="text" class="form-control" id="mb-mobile" placeholder="মোবাইল নম্বর">
+        </div>
+        <div class="form-group">
+          <label>ঠিকানা</label>
+          <input type="text" class="form-control" id="mb-address" placeholder="ঠিকানা (ঐচ্ছিক)">
+        </div>
+        <div class="form-group">
+          <label>বাকির পরিমাণ (৳)</label>
+          <input type="number" class="form-control" id="mb-amount" placeholder="০">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>নোট / কারণ</label>
+          <input type="text" class="form-control" id="mb-note" placeholder="যেমন: পুরনো বাকি, পণ্যের নাম ইত্যাদি">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('manual-baki-modal')">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveManualBaki()">✅ বাকি যোগ করুন</button>
+    </div>
+  </div>
+</div>
+</body></html>`);
   win.document.close();
 }
 
@@ -2253,23 +2245,31 @@ function renderReceivable() {
   memos.forEach(m => {
     if (m.baki <= 0) return;
     const key = `${m.mobile||m.customer}_${m.company}`;
-    if (!map[key]) map[key] = { customer:m.customer, mobile:m.mobile||'-', company:m.company, totalSale:0, totalBaki:0, date:m.date };
+    if (!map[key]) map[key] = { customer:m.customer, mobile:m.mobile||'-', company:m.company, totalSale:0, totalBaki:0, date:m.date, isManual:false };
     map[key].totalSale += m.total||0;
     map[key].totalBaki += m.baki||0;
     if (m.date > map[key].date) map[key].date = m.date;
   });
 
+  // Add manual bakis to the map
+  manualBakis.forEach(b => {
+    const key = `${b.mobile||b.customer}_${b.company}`;
+    if (!map[key]) map[key] = { customer:b.customer, mobile:b.mobile||'-', company:b.company, totalSale:0, totalBaki:0, date:b.date, isManual:true, manualId:b.id };
+    map[key].totalBaki += b.amount||0;
+    if (b.date > map[key].date) map[key].date = b.date;
+  });
+
   let rows = Object.values(map).map(r => {
-    const paid = payments.filter(p=>p.mobile===r.mobile && p.company==r.company).reduce((s,p)=>s+(p.amount||0),0);
+    const paid = payments.filter(p=>(p.mobile===r.mobile || p.mobile===r.mobile) && p.company==r.company).reduce((s,p)=>s+(p.amount||0),0);
     return { ...r, paid, balance: Math.max(0, r.totalBaki - paid) };
   }).filter(r => r.balance > 0);
 
-  if (search) rows = rows.filter(r=>r.customer.toLowerCase().includes(search)||r.mobile.includes(search));
+  if (search) rows = rows.filter(r=>r.customer.toLowerCase().includes(search)||(r.mobile||'').includes(search));
   if (filterCo!=='') rows = rows.filter(r=>r.company==filterCo);
 
   document.getElementById('recv-tbody').innerHTML = rows.length ? rows.map(r=>`
     <tr>
-      <td><strong>${r.customer}</strong></td>
+      <td><strong>${r.customer}</strong>${r.isManual ? ' <span style="font-size:10px;background:#e0e7ff;color:#4f46e5;padding:1px 6px;border-radius:8px;">ম্যানুয়াল</span>' : ''}</td>
       <td>${r.mobile}</td>
       <td><span style="background:${getCompanyColor(r.company)}20;color:${getCompanyColor(r.company)};border:1px solid ${getCompanyColor(r.company)}60;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">${COMPANIES[r.company]?.short}</span></td>
       <td>${fmtDate(r.date)}</td>
@@ -2279,6 +2279,7 @@ function renderReceivable() {
       <td style="display:flex;gap:6px;">
         <button class="btn btn-primary btn-sm" onclick="viewCustomerDetails('${r.customer}','${r.mobile}',${r.company})">👁️ ভিউ</button>
         <button class="btn btn-success btn-sm" onclick="quickCollect('${r.customer}','${r.mobile}',${r.company},${r.balance})">💳 নিন</button>
+        ${r.isManual && isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deleteManualBaki(${r.manualId})">🗑️</button>` : ''}
       </td>
     </tr>`).join('') : `<tr><td colspan="8"><div class="empty-state"><div class="icon">✅</div><p>কোনো বাকি নেই!</p></div></td></tr>`;
 }
@@ -2465,6 +2466,14 @@ function loadCustomerList() {
     const key = `${m.mobile||m.customer}_${m.company}`;
     if (!map[key]) map[key] = { customer:m.customer, mobile:m.mobile||'', company:m.company, baki:0 };
     map[key].baki += m.baki||0;
+  });
+
+  // Manual bakis also in the list
+  manualBakis.forEach(b => {
+    if (co!=='' && b.company!=co) return;
+    const key = `${b.mobile||b.customer}_${b.company}`;
+    if (!map[key]) map[key] = { customer:b.customer, mobile:b.mobile||'', company:b.company, baki:0 };
+    map[key].baki += b.amount||0;
   });
 
   const rows = Object.values(map).map(r => {
@@ -2655,6 +2664,49 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); });
 });
 
+
+// ===== MANUAL BAKI =====
+function openManualBakiModal() {
+  document.getElementById('mb-date').value = today();
+  document.getElementById('mb-company').value = currentCompany;
+  document.getElementById('mb-customer').value = '';
+  document.getElementById('mb-mobile').value = '';
+  document.getElementById('mb-address').value = '';
+  document.getElementById('mb-amount').value = '';
+  document.getElementById('mb-note').value = '';
+  document.getElementById('manual-baki-modal').classList.add('open');
+}
+
+function saveManualBaki() {
+  const customer = document.getElementById('mb-customer').value.trim();
+  const amount = parseFloat(document.getElementById('mb-amount').value) || 0;
+  if (!customer) { alert('গ্রাহকের নাম লিখুন!'); return; }
+  if (!amount) { alert('বাকির পরিমাণ লিখুন!'); return; }
+  const entry = {
+    id: Date.now(),
+    company: parseInt(document.getElementById('mb-company').value),
+    date: document.getElementById('mb-date').value,
+    customer,
+    mobile: document.getElementById('mb-mobile').value.trim() || '-',
+    address: document.getElementById('mb-address').value.trim(),
+    amount,
+    note: document.getElementById('mb-note').value.trim(),
+  };
+  manualBakis.push(entry);
+  saveData('manualBakis', manualBakis);
+  closeModal('manual-baki-modal');
+  renderReceivable();
+  alert('✅ বাকি যোগ হয়েছে!');
+}
+
+function deleteManualBaki(id) {
+  if (!isAdmin()) { alert('⛔ ডিলিট করার অনুমতি নেই!'); return; }
+  if (!confirm('এই ম্যানুয়াল বাকি মুছে ফেলতে চান?')) return;
+  manualBakis = manualBakis.filter(b => b.id !== id);
+  saveData('manualBakis', manualBakis);
+  renderReceivable();
+}
+
 // ===== INIT =====
 document.getElementById('current-date').textContent = new Date().toLocaleDateString('bn-BD', {year:'numeric',month:'long',day:'numeric'});
 // Set today for custom supplier date
@@ -2662,10 +2714,6 @@ const cseDateEl = document.getElementById('cse-date');
 if (cseDateEl) cseDateEl.value = today();
 checkSession();
 addProductRow();
-// Firebase থেকে ডাটা লোড করো (লগইন থাকলে)
-if (localStorage.getItem('tg_session') === 'ok') {
-  loadAllFromFirebase();
-}
 </script>
 </body>
 </html>
