@@ -1389,6 +1389,58 @@ tr:hover td { background: #eef2ff; }
   </div>
 </div>
 
+
+<!-- Manual Baki Modal -->
+<div class="modal-overlay" id="manual-baki-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>➕ ম্যানুয়াল বাকি যোগ</h2>
+      <button class="modal-close" onclick="closeModal('manual-baki-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid form-grid-2">
+        <div class="form-group">
+          <label>কোম্পানি</label>
+          <select class="form-control" id="mb-company">
+            <option value="0">তানভির সিমেন্ট</option>
+            <option value="1">তানভির এন্টারপ্রাইজ (স্টিল)</option>
+            <option value="2">সুরমা স্টিল হাউজ</option>
+            <option value="3">সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>তারিখ</label>
+          <input type="date" class="form-control" id="mb-date">
+        </div>
+        <div class="form-group">
+          <label>গ্রাহকের নাম</label>
+          <input type="text" class="form-control" id="mb-customer" placeholder="গ্রাহকের নাম লিখুন">
+        </div>
+        <div class="form-group">
+          <label>মোবাইল নম্বর</label>
+          <input type="text" class="form-control" id="mb-mobile" placeholder="মোবাইল নম্বর">
+        </div>
+        <div class="form-group">
+          <label>ঠিকানা</label>
+          <input type="text" class="form-control" id="mb-address" placeholder="ঠিকানা (ঐচ্ছিক)">
+        </div>
+        <div class="form-group">
+          <label>বাকির পরিমাণ (৳)</label>
+          <input type="number" class="form-control" id="mb-amount" placeholder="০">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>নোট / কারণ</label>
+          <input type="text" class="form-control" id="mb-note" placeholder="যেমন: পুরনো বাকি, পণ্যের নাম ইত্যাদি">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('manual-baki-modal')">বাতিল</button>
+      <button class="btn btn-primary" onclick="saveManualBaki()">✅ বাকি যোগ করুন</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ===== LOGIN SYSTEM =====
 const USERS = [
@@ -1993,58 +2045,7 @@ function printCurrentMemo() {
     </style>
   </head><body>`);
   win.document.write(html);
-  win.document.write(`<div class="no-print"><button onclick="window.print()" style="padding:10px 28px;background:#1a3a5c;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">🖨️ প্রিন্ট করুন</button></div>
-<!-- Manual Baki Modal -->
-<div class="modal-overlay" id="manual-baki-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>➕ ম্যানুয়াল বাকি যোগ</h2>
-      <button class="modal-close" onclick="closeModal('manual-baki-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid form-grid-2">
-        <div class="form-group">
-          <label>কোম্পানি</label>
-          <select class="form-control" id="mb-company">
-            <option value="0">তানভির সিমেন্ট</option>
-            <option value="1">তানভির এন্টারপ্রাইজ (স্টিল)</option>
-            <option value="2">সুরমা স্টিল হাউজ</option>
-            <option value="3">সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>তারিখ</label>
-          <input type="date" class="form-control" id="mb-date">
-        </div>
-        <div class="form-group">
-          <label>গ্রাহকের নাম</label>
-          <input type="text" class="form-control" id="mb-customer" placeholder="গ্রাহকের নাম লিখুন">
-        </div>
-        <div class="form-group">
-          <label>মোবাইল নম্বর</label>
-          <input type="text" class="form-control" id="mb-mobile" placeholder="মোবাইল নম্বর">
-        </div>
-        <div class="form-group">
-          <label>ঠিকানা</label>
-          <input type="text" class="form-control" id="mb-address" placeholder="ঠিকানা (ঐচ্ছিক)">
-        </div>
-        <div class="form-group">
-          <label>বাকির পরিমাণ (৳)</label>
-          <input type="number" class="form-control" id="mb-amount" placeholder="০">
-        </div>
-        <div class="form-group" style="grid-column:1/-1;">
-          <label>নোট / কারণ</label>
-          <input type="text" class="form-control" id="mb-note" placeholder="যেমন: পুরনো বাকি, পণ্যের নাম ইত্যাদি">
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('manual-baki-modal')">বাতিল</button>
-      <button class="btn btn-primary" onclick="saveManualBaki()">✅ বাকি যোগ করুন</button>
-    </div>
-  </div>
-</div>
-</body></html>`);
+  win.document.write(`<div class="no-print"><button onclick="window.print()" style="padding:10px 28px;background:#1a3a5c;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">🖨️ প্রিন্ট করুন</button></div></body></html>`);
   win.document.close();
 }
 
