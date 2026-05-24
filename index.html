@@ -5,6 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>আমার হিসাব — সফটওয়্যার</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, get, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ======================================================
+  // 🔥 আপনার Firebase Config এখানে বসান
+  // Firebase Console → Project Settings → Your apps → Config
+  // ======================================================
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "YOUR_PROJECT",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  window._fbDb = db;
+  window._fbRef = ref;
+  window._fbSet = set;
+  window._fbGet = get;
+  window._fbOnValue = onValue;
+  window._fbRemove = remove;
+  window._fbReady = true;
+
+  // Firebase ready হলে app initialize করো
+  window.dispatchEvent(new Event('firebaseReady'));
+</script>
 <style>
 :root {
   --bg: #f0f4ff;
@@ -64,35 +96,21 @@ body {
 }
 
 .sidebar-logo {
-  padding: 22px 16px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  position: relative;
-  overflow: hidden;
-}
-.sidebar-logo::before {
-  content: "📒";
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-size: 36px;
-  opacity: 0.18;
+  padding: 20px 16px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.08);
 }
 .sidebar-logo h1 {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
   color: #ffffff;
   line-height: 1.3;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  letter-spacing: 0.5px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 .sidebar-logo p {
-  font-size: 12px;
-  color: rgba(255,255,255,0.8);
-  margin-top: 4px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+  margin-top: 2px;
 }
 
 .nav-section {
@@ -232,9 +250,9 @@ body {
   height: 3px;
   background: var(--accent-color, var(--accent));
 }
-.stat-label { font-size: 15px; color: #6366f1; margin-bottom: 8px; font-weight: 600; }
-.stat-value { font-size: 30px; font-weight: 800; color: var(--text); }
-.stat-sub { font-size: 13px; color: #6366f1; margin-top: 5px; }
+.stat-label { font-size: 11px; color: #6366f1; margin-bottom: 6px; }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--text); }
+.stat-sub { font-size: 11px; color: #6366f1; margin-top: 3px; }
 
 .section-title {
   font-size: 15px;
@@ -273,8 +291,8 @@ body {
 .company-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
 .company-card .mini-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
 .mini-stat { text-align: center; }
-.mini-stat-label { font-size: 13px; color: #6366f1; font-weight: 600; }
-.mini-stat-value { font-size: 20px; font-weight: 800; }
+.mini-stat-label { font-size: 10px; color: #6366f1; }
+.mini-stat-value { font-size: 14px; font-weight: 700; }
 
 /* TABLE */
 .table-wrap {
@@ -400,27 +418,27 @@ tr:hover td { background: #eef2ff; }
 .memo-products { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
 .memo-product-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 24px;
-  gap: 6px;
+  grid-template-columns: 2.5fr 0.7fr 0.7fr 0.7fr 0.7fr 20px;
+  gap: 4px;
   align-items: center;
   background: #f0f4ff;
   border: 1.5px solid #c7d2fe;
   border-radius: var(--radius2);
-  padding: 8px;
+  padding: 5px 6px;
   transition: border-color 0.15s;
 }
 .memo-product-row:hover { border-color: #a5b4fc; }
 .memo-product-row input, .memo-product-row select {
   background: #f8f9ff;
   border: 1.5px solid #c7d2fe;
-  border-radius: 6px;
-  padding: 6px 8px;
-  font-size: 13px;
+  border-radius: 5px;
+  padding: 4px 6px;
+  font-size: 12px;
   color: #1e1b4b;
   font-family: 'Hind Siliguri', sans-serif;
   width: 100%;
 }
-.memo-product-row input:focus, .memo-product-row select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.10); }
+.memo-product-row input:focus, .memo-product-row select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.10); }
 .remove-row-btn {
   background: none;
   border: none;
@@ -453,10 +471,10 @@ tr:hover td { background: #eef2ff; }
   padding: 12px 16px;
   margin-top: 8px;
 }
-.memo-total-item { display: flex; justify-content: space-between; align-items: center; font-size: 16px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.memo-total-item { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border); }
 .memo-total-item span:first-child { color: #6366f1; }
-.memo-total-item span:last-child { font-weight: 700; font-size: 17px; }
-.memo-total-main { padding-top: 12px; border-top: 2px solid var(--border2); font-size: 22px; font-weight: 800; color: var(--green); display: flex; justify-content: space-between; margin-top: 6px; }
+.memo-total-item span:last-child { font-weight: 600; }
+.memo-total-main { padding-top: 10px; border-top: 2px solid var(--border2); font-size: 15px; font-weight: 700; color: var(--green); display: flex; justify-content: space-between; margin-top: 4px; }
 
 /* PRINT MEMO */
 @media print {
@@ -691,7 +709,6 @@ tr:hover td { background: #eef2ff; }
       <div class="nav-item" onclick="navigate('payable')"><span class="icon">🟡</span> দেনাদার (অগ্রিম)</div>
       <div class="nav-item" onclick="navigate('payment')"><span class="icon">💳</span> পেমেন্ট কালেকশন</div>
       <div class="nav-item" onclick="navigate('supplier-payment')"><span class="icon">🏦</span> সরবরাহকারী পেমেন্ট</div>
-      <div class="nav-item" onclick="navigate('all-reports')"><span class="icon">📊</span> সকল রিপোর্ট</div>
     </div>
 
     <div class="nav-section">
@@ -722,17 +739,6 @@ tr:hover td { background: #eef2ff; }
         <div class="company-dashboard" id="company-cards"></div>
 
         <div class="section-title">🧾 সাম্প্রতিক মেমো</div>
-        <div style="display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
-          <input type="date" class="form-control" style="max-width:160px;" id="dash-filter-date" oninput="renderDashMemos()">
-          <select class="form-control" style="max-width:180px;" id="dash-filter-company" onchange="renderDashMemos()">
-            <option value="">সব কোম্পানি</option>
-            <option value="0">তানভির সিমেন্ট</option>
-            <option value="1">তানভির স্টিল</option>
-            <option value="2">সুরমা স্টিল হাউজ</option>
-            <option value="3">সুরমা এস এস</option>
-          </select>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('dash-filter-date').value='';document.getElementById('dash-filter-company').value='';renderDashMemos();">✕ ক্লিয়ার</button>
-        </div>
         <div class="table-wrap">
           <table>
             <thead><tr>
@@ -740,7 +746,6 @@ tr:hover td { background: #eef2ff; }
               <th>মোট</th><th>বাকি</th><th>অবস্থা</th>
             </tr></thead>
             <tbody id="recent-memo-tbody"></tbody>
-            <tfoot id="recent-memo-summary"></tfoot>
           </table>
         </div>
       </div>
@@ -782,7 +787,7 @@ tr:hover td { background: #eef2ff; }
         <div class="divider"></div>
         <div class="section-title">🛒 পণ্যের তালিকা</div>
 
-        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 24px;gap:6px;padding:4px 8px;margin-bottom:4px;">
+        <div style="display:grid;grid-template-columns:2.5fr 0.7fr 0.7fr 0.7fr 0.7fr 20px;gap:4px;padding:3px 6px;margin-bottom:4px;">
           <span style="font-size:10px;color:#6366f1;font-weight:600;">পণ্যের নাম</span>
           <span style="font-size:10px;color:#6366f1;font-weight:600;">পরিমাণ</span>
           <span style="font-size:10px;color:#6366f1;font-weight:600;">একক</span>
@@ -791,86 +796,82 @@ tr:hover td { background: #eef2ff; }
           <span></span>
         </div>
 
-        <div class="memo-products" id="memo-products-container"></div>
-        <button class="add-product-btn" onclick="addProductRow()">+ পণ্য যোগ করুন</button>
+        <!-- ══ MAIN MEMO LAYOUT: Left=form, Right=fixed summary ══ -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
 
-        <div class="divider"></div>
+          <!-- LEFT SIDE: products + labor/return/advance -->
+          <div style="flex:1;min-width:0;">
+            <div class="memo-products" id="memo-products-container"></div>
+            <button class="add-product-btn" onclick="addProductRow()">+ পণ্য যোগ করুন</button>
 
-        <!-- ══ হিসাব সারসংক্ষেপ ══ -->
-        <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+            <div class="divider" style="margin:12px 0;"></div>
 
-          <!-- Input fields (left) -->
-          <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:10px;background:#f8f9ff;border:1.5px solid #c7d2fe;border-radius:12px;padding:16px;">
-            <div class="form-group">
-              <label>লেবার / পরিবহন চার্জ (৳)</label>
-              <input type="number" class="form-control" id="memo-labor" placeholder="0" oninput="calcMemoTotal()">
+            <!-- লেবার / রিটার্ন / জমা — compact grid -->
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#f8f9ff;border:1.5px solid #c7d2fe;border-radius:10px;padding:12px;">
+              <div class="form-group">
+                <label style="font-size:11px;">লেবার / পরিবহন (৳)</label>
+                <input type="number" class="form-control" id="memo-labor" placeholder="0" oninput="calcMemoTotal()" style="padding:6px 8px;font-size:13px;">
+              </div>
+              <div class="form-group">
+                <label style="font-size:11px;">পণ্য রিটার্ন (৳) <span style="color:var(--red);">−</span></label>
+                <input type="number" class="form-control" id="memo-return" placeholder="0" oninput="calcMemoTotal()" style="border-color:#fca5a5;padding:6px 8px;font-size:13px;">
+              </div>
+              <div class="form-group">
+                <label style="font-size:11px;">জমা / অগ্রিম (৳) <span style="color:var(--green);">−</span></label>
+                <input type="number" class="form-control" id="memo-advance" placeholder="0" oninput="calcMemoTotal()" style="border-color:#6ee7b7;padding:6px 8px;font-size:13px;">
+              </div>
             </div>
-            <div class="form-group">
-              <label>পণ্য রিটার্ন (৳) — <span style="color:var(--red);font-size:11px;">থাকলে বিয়োগ হবে</span></label>
-              <input type="number" class="form-control" id="memo-return" placeholder="0" oninput="calcMemoTotal()" style="border-color:#fca5a5;">
-            </div>
-            <div class="form-group">
-              <label>জমা / অগ্রিম (৳)</label>
-              <input type="number" class="form-control" id="memo-advance" placeholder="0" oninput="calcMemoTotal()" style="border-color:#6ee7b7;">
+
+            <div style="display:flex;gap:10px;margin-top:14px;justify-content:flex-end;">
+              <button class="btn btn-ghost" onclick="clearMemo()">🗑️ ক্লিয়ার করুন</button>
+              <button class="btn btn-primary" onclick="submitMemo()">✅ মেমো সেভ করুন</button>
             </div>
           </div>
 
-          <!-- Summary box (right) -->
-          <div style="min-width:280px;background:#ffffff;border:2px solid #c7d2fe;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(79,70,229,0.10);">
-
-            <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);padding:12px 16px;font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.6px;">
+          <!-- RIGHT SIDE: sticky summary box -->
+          <div style="width:260px;flex-shrink:0;position:sticky;top:70px;background:#ffffff;border:2px solid #c7d2fe;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(79,70,229,0.12);">
+            <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);padding:10px 14px;font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px;text-align:center;">
               💰 হিসাব সারসংক্ষেপ
             </div>
 
-            <!-- row 1: পণ্যের মোট -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--text2);">① পণ্যের মোট</span>
-              <span id="t-product" style="font-size:14px;font-weight:700;color:var(--text);">৳ ০</span>
+            <!-- row 1 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--text2);">① পণ্যের মোট</span>
+              <span id="t-product" style="font-size:13px;font-weight:700;color:var(--text);">৳ ০</span>
             </div>
-
-            <!-- row 2: লেবার চার্জ -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--text2);">② লেবার / পরিবহন (+)</span>
-              <span id="t-labor" style="font-size:14px;font-weight:700;color:var(--accent);">৳ ০</span>
+            <!-- row 2 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--text2);">② লেবার (+)</span>
+              <span id="t-labor" style="font-size:13px;font-weight:700;color:var(--accent);">৳ ০</span>
             </div>
-
-            <!-- row 3: মোট টাকা (product + labor) -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(91,155,255,0.06);">
-              <span style="font-size:16px;font-weight:800;color:var(--text);">③ মোট টাকা</span>
-              <span id="t-gross" style="font-size:15px;font-weight:700;color:var(--accent);">৳ ০</span>
+            <!-- row 3 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(91,155,255,0.06);">
+              <span style="font-size:12px;font-weight:700;color:var(--text);">③ মোট টাকা</span>
+              <span id="t-gross" style="font-size:14px;font-weight:800;color:var(--accent);">৳ ০</span>
             </div>
-
-            <!-- row 4: রিটার্ন (বিয়োগ) -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--red);">④ রিটার্ন (−)</span>
-              <span id="t-return" style="font-size:14px;font-weight:700;color:var(--red);">৳ ০</span>
+            <!-- row 4 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--red);">④ রিটার্ন (−)</span>
+              <span id="t-return" style="font-size:13px;font-weight:700;color:var(--red);">৳ ০</span>
             </div>
-
-            <!-- row 5: মোট টাকা after return -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:2px solid var(--border2);background:rgba(91,155,255,0.06);">
-              <span style="font-size:16px;font-weight:800;color:var(--text);">⑤ মোট টাকা (রিটার্নের পর)</span>
-              <span id="t-total" style="font-size:15px;font-weight:700;color:var(--text);">৳ ০</span>
+            <!-- row 5 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:2px solid var(--border2);background:rgba(91,155,255,0.06);">
+              <span style="font-size:11px;font-weight:700;color:var(--text);">⑤ মোট (রিটার্নের পর)</span>
+              <span id="t-total" style="font-size:13px;font-weight:800;color:var(--text);">৳ ০</span>
             </div>
-
-            <!-- row 6: জমা -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--green);">⑥ জমা / অগ্রিম (−)</span>
-              <span id="t-advance" style="font-size:14px;font-weight:700;color:var(--green);">৳ ০</span>
+            <!-- row 6 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--green);">⑥ জমা (−)</span>
+              <span id="t-advance" style="font-size:13px;font-weight:700;color:var(--green);">৳ ০</span>
             </div>
-
-            <!-- row 7: বাকি (FINAL) -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(255,107,107,0.08);" id="baki-row">
-              <span style="font-size:14px;font-weight:700;" id="baki-label">⑦ বাকি</span>
-              <span id="t-baki" style="font-size:18px;font-weight:800;color:var(--red);">৳ ০</span>
+            <!-- row 7: বাকি FINAL -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:rgba(255,107,107,0.08);" id="baki-row">
+              <span style="font-size:13px;font-weight:700;" id="baki-label">⑦ বাকি</span>
+              <span id="t-baki" style="font-size:20px;font-weight:900;color:var(--red);">৳ ০</span>
             </div>
           </div>
-        </div>
 
-        <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end;">
-          <button class="btn btn-ghost" onclick="clearMemo()">🗑️ ক্লিয়ার করুন</button>
-          <button class="btn btn-primary" onclick="submitMemo()">✅ মেমো সেভ করুন</button>
-        </div>
-      </div>
+        </div><!-- /main memo layout -->
 
       <!-- ===== MEMO LIST ===== -->
       <div class="page" id="page-memo-list">
@@ -923,7 +924,6 @@ tr:hover td { background: #eef2ff; }
               <th>পণ্যের নাম</th>
               <th class="text-right">ক্রয় পরিমাণ</th>
               <th class="text-right">ম্যানুয়াল যোগ</th>
-              <th class="text-right">ফেরত পণ্য</th>
               <th class="text-right">মোট বিক্রয়</th>
               <th class="text-right">বর্তমান স্টক</th>
               <th>একক</th>
@@ -954,14 +954,13 @@ tr:hover td { background: #eef2ff; }
 
       <!-- ===== RECEIVABLE (বাকি/পাওনাদার) ===== -->
       <div class="page" id="page-receivable">
-        <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;">
           <input type="text" class="form-control" style="max-width:220px;" placeholder="🔍 নাম/মোবাইল খুঁজুন..." id="recv-search" oninput="renderReceivable()">
           <select class="form-control" style="max-width:200px;" id="recv-company" onchange="renderReceivable()">
             <option value="">সব কোম্পানি</option>
             <option value="0">তানভির সিমেন্ট</option><option value="1">তানভির স্টিল</option>
             <option value="2">সুরমা স্টিল হাউজ</option><option value="3">সুরমা এস এস</option>
           </select>
-          <button class="btn btn-primary" onclick="openManualBakiModal()">+ ম্যানুয়াল বাকি যোগ</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -1105,23 +1104,6 @@ tr:hover td { background: #eef2ff; }
         </div>
       </div>
 
-
-      <!-- ===== ALL REPORTS ===== -->
-      <div class="page" id="page-all-reports">
-        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
-          <select class="form-control" style="max-width:220px;" id="allrep-company" onchange="renderAllReports()">
-            <option value="0">তানভির সিমেন্ট</option>
-            <option value="1">তানভির এন্টারপ্রাইজ (স্টিল)</option>
-            <option value="2">সুরমা স্টিল হাউজ</option>
-            <option value="3">সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম</option>
-          </select>
-          <select class="form-control" style="max-width:200px;" id="allrep-tab" onchange="renderAllReports()">
-            <option value="summary">আইটেম রিপোর্ট</option>
-            <option value="ledger">খতিয়ান / লেজার</option>
-          </select>
-        </div>
-        <div id="allrep-content" style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.06);"></div>
-      </div>
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
@@ -1434,58 +1416,6 @@ tr:hover td { background: #eef2ff; }
   </div>
 </div>
 
-
-<!-- Manual Baki Modal -->
-<div class="modal-overlay" id="manual-baki-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>➕ ম্যানুয়াল বাকি যোগ</h2>
-      <button class="modal-close" onclick="closeModal('manual-baki-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid form-grid-2">
-        <div class="form-group">
-          <label>কোম্পানি</label>
-          <select class="form-control" id="mb-company">
-            <option value="0">তানভির সিমেন্ট</option>
-            <option value="1">তানভির এন্টারপ্রাইজ (স্টিল)</option>
-            <option value="2">সুরমা স্টিল হাউজ</option>
-            <option value="3">সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>তারিখ</label>
-          <input type="date" class="form-control" id="mb-date">
-        </div>
-        <div class="form-group">
-          <label>গ্রাহকের নাম</label>
-          <input type="text" class="form-control" id="mb-customer" placeholder="গ্রাহকের নাম লিখুন">
-        </div>
-        <div class="form-group">
-          <label>মোবাইল নম্বর</label>
-          <input type="text" class="form-control" id="mb-mobile" placeholder="মোবাইল নম্বর">
-        </div>
-        <div class="form-group">
-          <label>ঠিকানা</label>
-          <input type="text" class="form-control" id="mb-address" placeholder="ঠিকানা (ঐচ্ছিক)">
-        </div>
-        <div class="form-group">
-          <label>বাকির পরিমাণ (৳)</label>
-          <input type="number" class="form-control" id="mb-amount" placeholder="০">
-        </div>
-        <div class="form-group" style="grid-column:1/-1;">
-          <label>নোট / কারণ</label>
-          <input type="text" class="form-control" id="mb-note" placeholder="যেমন: পুরনো বাকি, পণ্যের নাম ইত্যাদি">
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('manual-baki-modal')">বাতিল</button>
-      <button class="btn btn-primary" onclick="saveManualBaki()">✅ বাকি যোগ করুন</button>
-    </div>
-  </div>
-</div>
-
 <script>
 // ===== LOGIN SYSTEM =====
 const USERS = [
@@ -1566,30 +1496,148 @@ const COMPANIES = [
   { name: 'সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম', short: 'সুরমা এস এস', color: '#d97706', cls: 'active-c4' },
 ];
 
-function loadData(key, def) {
-  try { return JSON.parse(localStorage.getItem(key)) || def; } catch { return def; }
-}
-function saveData(key, val) {
-  localStorage.setItem(key, JSON.stringify(val));
-}
-
-let memos = loadData('memos', []);
-let purchases = loadData('purchases', []);
-let advances = loadData('advances', []);
-let payments = loadData('payments', []);
-let supplierPays = loadData('supplierPays', []);
-let manualStock = loadData('manualStock', []);
-let recycleBin = loadData('recycleBin', []);
-let customSupplierEntries = loadData('customSupplierEntries', []);
-let customSupplierNames = loadData('customSupplierNames', []);
-let memoCounter = loadData('memoCounter', 1);
-let manualBakis = loadData('manualBakis', []);
-let returnedStock = loadData('returnedStock', []);
+// ===== FIREBASE DATA LAYER =====
+// সব data in-memory রাখা হয়; Firebase থেকে একবার load হয়, save হলে Firebase-এ যায়
+let memos = [];
+let purchases = [];
+let advances = [];
+let payments = [];
+let supplierPays = [];
+let manualStock = [];
+let recycleBin = [];
+let customSupplierEntries = [];
+let customSupplierNames = [];
+let memoCounter = 1;
 let currentCompany = 0;
 let currentPage = 'dashboard';
 let stockTab = 0;
 let profitTab = 0;
 let viewingMemo = null;
+let _fbLoaded = false;
+
+// Loading overlay দেখাও
+function showLoading(msg) {
+  let el = document.getElementById('fb-loading');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'fb-loading';
+    el.style.cssText = 'position:fixed;inset:0;background:rgba(79,70,229,0.92);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:Hind Siliguri,sans-serif;gap:16px;';
+    el.innerHTML = `<div style="font-size:48px">🔥</div><div id="fb-load-msg" style="font-size:18px;font-weight:700"></div><div style="width:200px;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden"><div id="fb-load-bar" style="height:100%;background:#fff;border-radius:2px;width:0;transition:width 0.3s"></div></div>`;
+    document.body.appendChild(el);
+  }
+  document.getElementById('fb-load-msg').textContent = msg || 'Firebase লোড হচ্ছে...';
+}
+function hideLoading() {
+  const el = document.getElementById('fb-loading');
+  if (el) el.remove();
+}
+function setLoadBar(pct) {
+  const b = document.getElementById('fb-load-bar');
+  if (b) b.style.width = pct + '%';
+}
+
+async function saveData(key, val) {
+  // in-memory update
+  if (key === 'memos') memos = val;
+  else if (key === 'purchases') purchases = val;
+  else if (key === 'advances') advances = val;
+  else if (key === 'payments') payments = val;
+  else if (key === 'supplierPays') supplierPays = val;
+  else if (key === 'manualStock') manualStock = val;
+  else if (key === 'recycleBin') recycleBin = val;
+  else if (key === 'customSupplierEntries') customSupplierEntries = val;
+  else if (key === 'customSupplierNames') customSupplierNames = val;
+  else if (key === 'memoCounter') memoCounter = val;
+
+  // Firebase-এ save করো
+  if (window._fbReady) {
+    try {
+      await window._fbSet(window._fbRef(window._fbDb, 'data/' + key), val);
+    } catch(e) {
+      // Firebase error হলে localStorage fallback
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch{}
+      console.warn('Firebase save failed, used localStorage:', e);
+    }
+  } else {
+    // Firebase এখনো ready না, localStorage fallback
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch{}
+  }
+}
+
+async function loadAllDataFromFirebase() {
+  showLoading('Firebase এ সংযুক্ত হচ্ছে...');
+  setLoadBar(10);
+  try {
+    const snapshot = await window._fbGet(window._fbRef(window._fbDb, 'data'));
+    setLoadBar(80);
+    const d = snapshot.val() || {};
+    memos = d.memos || [];
+    purchases = d.purchases || [];
+    advances = d.advances || [];
+    payments = d.payments || [];
+    supplierPays = d.supplierPays || [];
+    manualStock = d.manualStock || [];
+    recycleBin = d.recycleBin || [];
+    customSupplierEntries = d.customSupplierEntries || [];
+    customSupplierNames = d.customSupplierNames || [];
+    memoCounter = d.memoCounter || 1;
+    setLoadBar(100);
+
+    // Real-time sync চালু করো
+    window._fbOnValue(window._fbRef(window._fbDb, 'data'), (snap) => {
+      if (!_fbLoaded) return; // প্রথম load এ skip করো
+      const dd = snap.val() || {};
+      memos = dd.memos || [];
+      purchases = dd.purchases || [];
+      advances = dd.advances || [];
+      payments = dd.payments || [];
+      supplierPays = dd.supplierPays || [];
+      manualStock = dd.manualStock || [];
+      recycleBin = dd.recycleBin || [];
+      customSupplierEntries = dd.customSupplierEntries || [];
+      customSupplierNames = dd.customSupplierNames || [];
+      memoCounter = dd.memoCounter || 1;
+      // current page re-render করো
+      renderPage(currentPage);
+    });
+
+    _fbLoaded = true;
+    hideLoading();
+    showSyncBadge('🟢 Firebase সংযুক্ত');
+  } catch(e) {
+    hideLoading();
+    // Fallback: localStorage থেকে load করো
+    memos = JSON.parse(localStorage.getItem('memos') || '[]');
+    purchases = JSON.parse(localStorage.getItem('purchases') || '[]');
+    advances = JSON.parse(localStorage.getItem('advances') || '[]');
+    payments = JSON.parse(localStorage.getItem('payments') || '[]');
+    supplierPays = JSON.parse(localStorage.getItem('supplierPays') || '[]');
+    manualStock = JSON.parse(localStorage.getItem('manualStock') || '[]');
+    recycleBin = JSON.parse(localStorage.getItem('recycleBin') || '[]');
+    customSupplierEntries = JSON.parse(localStorage.getItem('customSupplierEntries') || '[]');
+    customSupplierNames = JSON.parse(localStorage.getItem('customSupplierNames') || '[]');
+    memoCounter = JSON.parse(localStorage.getItem('memoCounter') || '1');
+    _fbLoaded = true;
+    showSyncBadge('🔴 Offline মোড (localStorage)');
+    console.warn('Firebase failed, using localStorage:', e);
+  }
+  // App শুরু করো
+  checkSession();
+  addProductRow();
+}
+
+function showSyncBadge(msg) {
+  let el = document.getElementById('sync-badge');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'sync-badge';
+    el.style.cssText = 'position:fixed;bottom:16px;left:16px;background:#1e1b4b;color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;font-family:Hind Siliguri,sans-serif;z-index:9000;box-shadow:0 2px 12px rgba(0,0,0,0.3);transition:opacity 0.5s;';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0.4'; }, 3000);
+}
 
 // ===== UTILS =====
 // ৫০ পয়সা বা বেশি হলে উপরে রাউন্ড, নিচে হলে নিচে রাউন্ড
@@ -1630,7 +1678,7 @@ function navigate(page) {
   currentPage = page;
   const titles = {
     dashboard: 'ড্যাশবোর্ড', memo: 'নতুন মেমো', 'memo-list': 'মেমো তালিকা',
-    purchase: 'ক্রয় তালিকা', stock: 'স্টক রিপোর্ট', profit: 'লাভ-ক্ষতি রিপোর্ট', 'all-reports': 'সকল রিপোর্ট',
+    purchase: 'ক্রয় তালিকা', stock: 'স্টক রিপোর্ট', profit: 'লাভ-ক্ষতি রিপোর্ট',
     receivable: 'পাওনাদার (বাকি)', payable: 'দেনাদার (অগ্রিম)',
     payment: 'পেমেন্ট কালেকশন', 'supplier-payment': 'সরবরাহকারী পেমেন্ট',
     recycle: '♻️ রিসাইকেল বিন (ক্যান্সেল মেমো)'
@@ -1655,7 +1703,6 @@ function renderPage(page) {
   else if (page==='memo-list') renderMemoList();
   else if (page==='purchase') renderPurchase();
   else if (page==='stock') renderStock();
-  else if (page==='all-reports') renderAllReports();
   else if (page==='profit') renderProfit();
   else if (page==='receivable') renderReceivable();
   else if (page==='payable') renderPayable();
@@ -1675,17 +1722,17 @@ function renderDashboard() {
   const totalAdvance = advances.reduce((s,a) => s + (a.amount||0), 0);
 
   const stats = [
-    { label: 'মোট বিক্রয়', value: fmt(totalSale), sub: `${memos.length} টি মেমো`, color: '#2ecc8a', valueColor: '#059669' },
-    { label: 'মোট ক্রয়', value: fmt(totalPur), sub: `${purchases.length} টি এন্ট্রি`, color: '#4f8ef7', valueColor: '#2563eb' },
-    { label: 'মোট পাওনা', value: fmt(totalBaki), sub: 'বাকি সংগ্রহ', color: '#e05a5a', valueColor: '#dc2626' },
-    { label: 'মোট আদায়', value: fmt(totalCollected), sub: 'পেমেন্ট কালেকশন', color: '#f0a500', valueColor: '#059669' },
-    { label: 'অগ্রিম গ্রাহক', value: fmt(totalAdvance), sub: `${advances.length} জন`, color: '#9b59b6', valueColor: '#7c3aed' },
+    { label: 'মোট বিক্রয়', value: fmt(totalSale), sub: `${memos.length} টি মেমো`, color: '#2ecc8a' },
+    { label: 'মোট ক্রয়', value: fmt(totalPur), sub: `${purchases.length} টি এন্ট্রি`, color: '#4f8ef7' },
+    { label: 'মোট পাওনা', value: fmt(totalBaki), sub: 'বাকি সংগ্রহ', color: '#e05a5a' },
+    { label: 'মোট আদায়', value: fmt(totalCollected), sub: 'পেমেন্ট কালেকশন', color: '#f0a500' },
+    { label: 'অগ্রিম গ্রাহক', value: fmt(totalAdvance), sub: `${advances.length} জন`, color: '#9b59b6' },
   ];
 
   document.getElementById('dash-stats').innerHTML = stats.map(s => `
     <div class="stat-card" style="--accent-color:${s.color}">
       <div class="stat-label">${s.label}</div>
-      <div class="stat-value" style="color:${s.valueColor || s.color}">${s.value}</div>
+      <div class="stat-value">${s.value}</div>
       <div class="stat-sub">${s.sub}</div>
     </div>
   `).join('');
@@ -1717,18 +1764,7 @@ function renderDashboard() {
   }).join('');
 
   // Recent memos
-  renderDashMemos();
-}
-
-function renderDashMemos() {
-  const filterDate = document.getElementById('dash-filter-date')?.value || '';
-  const filterCo = document.getElementById('dash-filter-company')?.value || '';
-
-  let filtered = [...memos].sort((a,b)=>b.id-a.id);
-  if (filterDate) filtered = filtered.filter(m => m.date === filterDate);
-  if (filterCo !== '') filtered = filtered.filter(m => m.company == filterCo);
-  const recent = filterDate || filterCo ? filtered : filtered.slice(0, 10);
-
+  const recent = [...memos].sort((a,b)=>b.id-a.id).slice(0,10);
   document.getElementById('recent-memo-tbody').innerHTML = recent.length ? recent.map(m => {
     const baki = getMemoBalance(m);
     return `<tr>
@@ -1741,22 +1777,6 @@ function renderDashMemos() {
       <td><span class="badge ${baki<=0?'badge-green':baki<m.total?'badge-amber':'badge-red'}">${baki<=0?'পরিশোধ':baki<m.total?'আংশিক':'বাকি'}</span></td>
     </tr>`;
   }).join('') : `<tr><td colspan="7"><div class="empty-state"><p>কোনো মেমো নেই</p></div></td></tr>`;
-
-  // Summary row
-  const summaryEl = document.getElementById('recent-memo-summary');
-  if ((filterDate || filterCo) && recent.length > 0) {
-    const totalAmt = recent.reduce((s,m) => s + (m.total||0), 0);
-    const totalBaki = recent.reduce((s,m) => s + getMemoBalance(m), 0);
-    summaryEl.innerHTML = `<tr style="background:#f0fdf4;font-weight:700;">
-      <td colspan="3" style="padding:8px 12px;font-size:13px;color:#059669;">মোট: ${recent.length} টি মেমো</td>
-      <td></td>
-      <td class="text-right" style="padding:8px 12px;color:#2563eb;">${fmt(totalAmt)}</td>
-      <td class="text-right" style="padding:8px 12px;color:#dc2626;">${fmt(totalBaki)}</td>
-      <td></td>
-    </tr>`;
-  } else {
-    summaryEl.innerHTML = '';
-  }
 }
 
 function getNetBaki() {
@@ -1798,7 +1818,7 @@ function addProductRow() {
       <option>লিটার</option><option>ব্যাগ</option><option>বান্ডেল</option>
     </select>
     <input type="number" placeholder="দর (৳)" oninput="calcRowTotal('${id}');calcMemoTotal()">
-    <span class="row-total" style="font-size:12px;font-weight:700;color:var(--green);text-align:right;padding:0 4px;">৳ ০</span>
+    <span class="row-total" style="font-size:11px;font-weight:700;color:var(--green);text-align:right;padding:0 2px;">৳ ০</span>
     <button class="remove-row-btn" onclick="removeProductRow('${id}')">✕</button>
   `;
   document.getElementById('memo-products-container').appendChild(row);
@@ -1941,9 +1961,8 @@ function renderMemoList() {
       <td class="text-right ${baki>0?'text-red':'text-green'}">${fmt(baki)}</td>
       <td><span class="badge ${baki<=0?'badge-green':baki<m.total?'badge-amber':'badge-red'}">${baki<=0?'পরিশোধ':baki<m.total?'আংশিক':'বাকি'}</span></td>
       <td>
-        <button class="btn btn-ghost btn-sm" onclick="viewMemo(${m.id})">👁️ ভিউ</button>
-        <button class="btn btn-primary btn-sm" onclick="openMemoEditModal(${m.id})">✏️ এডিট</button>
-        ${isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deleteMemo(${m.id})" title="ক্যান্সেল করুন">❌</button>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="viewMemo(${m.id})">👁️</button>
+        ${isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deleteMemo(${m.id})" title="ক্যান্সেল করুন">❌ ক্যান্সেল</button>` : ''}
       </td>
     </tr>`;
   }).join('') : `<tr><td colspan="9"><div class="empty-state"><div class="icon">📭</div><p>কোনো মেমো পাওয়া যায়নি</p></div></td></tr>`;
@@ -2120,132 +2139,7 @@ function printCurrentMemo() {
     </style>
   </head><body>`);
   win.document.write(html);
-  win.document.write(`<div class="no-print"><button onclick="window.print()" style="padding:10px 28px;background:#1a3a5c;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">🖨️ প্রিন্ট করুন</button></div>
-<!-- Payment View Modal -->
-<div class="modal-overlay" id="payment-view-modal">
-  <div class="modal" style="max-width:480px;">
-    <div class="modal-header">
-      <h2>💳 পেমেন্ট বিবরণ</h2>
-      <button class="modal-close" onclick="closeModal('payment-view-modal')">✕</button>
-    </div>
-    <div class="modal-body" id="payment-view-content"></div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('payment-view-modal')">বন্ধ করুন</button>
-    </div>
-  </div>
-</div>
-
-<!-- Stock View Modal -->
-<div class="modal-overlay" id="stock-view-modal">
-  <div class="modal" style="max-width:620px;">
-    <div class="modal-header">
-      <h2 id="stock-view-title">বিবরণ</h2>
-      <button class="modal-close" onclick="closeModal('stock-view-modal')">✕</button>
-    </div>
-    <div class="modal-body" id="stock-view-content" style="overflow-x:auto;"></div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('stock-view-modal')">বন্ধ করুন</button>
-    </div>
-  </div>
-</div>
-
-<!-- Memo Edit Modal -->
-<div class="modal-overlay" id="memo-edit-modal">
-  <div class="modal" style="max-width:620px;">
-    <div class="modal-header">
-      <h2>✏️ মেমো এডিট / পণ্য ফেরত</h2>
-      <button class="modal-close" onclick="closeModal('memo-edit-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="display:flex;gap:16px;margin-bottom:12px;background:#f9fafb;padding:12px;border-radius:8px;">
-        <div><span style="color:#9ca3af;font-size:12px;">মেমো নং</span><br><strong id="medit-memo-no">-</strong></div>
-        <div><span style="color:#9ca3af;font-size:12px;">গ্রাহক</span><br><strong id="medit-customer">-</strong></div>
-        <div><span style="color:#9ca3af;font-size:12px;">তারিখ</span><br><strong id="medit-date">-</strong></div>
-      </div>
-      <p style="color:#dc2626;font-size:12px;margin-bottom:10px;">⚠️ পণ্য ফেরত দিতে হলে পরিমাণ কমিয়ে দিন। ফেরত পণ্য স্বয়ংক্রিয়ভাবে স্টকে যোগ হবে।</p>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:13px;">
-          <thead><tr style="background:#f3f4f6;">
-            <th style="padding:8px;">পণ্য</th>
-            <th style="padding:8px;">একক</th>
-            <th style="padding:8px;">নতুন পরিমাণ</th>
-            <th style="padding:8px;text-align:right;">দর</th>
-            <th style="padding:8px;text-align:right;">উপমোট</th>
-            <th style="padding:8px;text-align:right;">ফেরত</th>
-          </tr></thead>
-          <tbody id="medit-products-tbody"></tbody>
-        </table>
-      </div>
-      <div style="margin-top:16px;display:flex;gap:20px;background:#f0fdf4;padding:12px;border-radius:8px;">
-        <div><span style="color:#9ca3af;font-size:12px;">নতুন মোট</span><br><strong id="medit-new-total" style="color:#059669;font-size:20px;">৳ 0</strong></div>
-        <div><span style="color:#9ca3af;font-size:12px;">ফেরত মূল্য</span><br><strong id="medit-return-amt" style="color:#dc2626;font-size:20px;">৳ 0</strong></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('memo-edit-modal')">বাতিল</button>
-      <button class="btn btn-primary" onclick="saveMemoEdit()">✅ আপডেট করুন</button>
-    </div>
-  </div>
-</div>
-
-<!-- Purchase Edit Modal -->
-<div class="modal-overlay" id="purchase-edit-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>✏️ ক্রয় এডিট</h2>
-      <button class="modal-close" onclick="closeModal('purchase-edit-modal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-grid form-grid-2">
-        <div class="form-group">
-          <label>কোম্পানি</label>
-          <select class="form-control" id="pur-edit-company">
-            <option value="0">তানভির সিমেন্ট</option>
-            <option value="1">তানভির এন্টারপ্রাইজ (স্টিল)</option>
-            <option value="2">সুরমা স্টিল হাউজ</option>
-            <option value="3">সুরমা এস এস এন্ড থাই অ্যালুমিনিয়াম</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>তারিখ</label>
-          <input type="date" class="form-control" id="pur-edit-date">
-        </div>
-        <div class="form-group">
-          <label>পণ্যের নাম</label>
-          <input type="text" class="form-control" id="pur-edit-product">
-        </div>
-        <div class="form-group">
-          <label>একক</label>
-          <select class="form-control" id="pur-edit-unit">
-            <option>কেজি</option><option>টন</option><option>পিস</option>
-            <option>লিটার</option><option>ব্যাগ</option><option>বান্ডেল</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>পরিমাণ</label>
-          <input type="number" class="form-control" id="pur-edit-qty">
-        </div>
-        <div class="form-group">
-          <label>ক্রয় দর (৳)</label>
-          <input type="number" class="form-control" id="pur-edit-rate">
-        </div>
-        <div class="form-group">
-          <label>সরবরাহকারী</label>
-          <input type="text" class="form-control" id="pur-edit-supplier">
-        </div>
-        <div class="form-group">
-          <label>নোট</label>
-          <input type="text" class="form-control" id="pur-edit-note">
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('purchase-edit-modal')">বাতিল</button>
-      <button class="btn btn-primary" onclick="savePurchaseEdit()">✅ আপডেট করুন</button>
-    </div>
-  </div>
-</div>
-</body></html>`);
+  win.document.write(`<div class="no-print"><button onclick="window.print()" style="padding:10px 28px;background:#1a3a5c;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:'Hind Siliguri',sans-serif">🖨️ প্রিন্ট করুন</button></div></body></html>`);
   win.document.close();
 }
 
@@ -2286,10 +2180,7 @@ function renderPurchase() {
       <td class="text-right">${fmt(p.rate)}</td>
       <td class="text-right fw-bold">${fmt(p.qty*p.rate)}</td>
       <td>${p.supplier||'-'}</td>
-      <td style="display:flex;gap:4px;">
-        ${isAdmin() ? `<button class="btn btn-primary btn-sm" onclick="openPurchaseEdit(${p.id})">✏️</button>` : ''}
-        ${isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deletePurchase(${p.id})">🗑️</button>` : ''}
-      </td>
+      <td>${isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deletePurchase(${p.id})">🗑️</button>` : '-'}</td>
     </tr>`).join('') || `<tr><td colspan="9"><div class="empty-state"><div class="icon">📦</div><p>কোনো ক্রয় নেই</p></div></td></tr>`;
 }
 function deletePurchase(id) {
@@ -2366,12 +2257,8 @@ function renderStock() {
     // ক্রয় দর: purchase avg > manual avg
     const avgRate = purAvgRate || manAvgRate;
 
-    // ফেরত স্টক
-    const retItems = returnedStock.filter(r => r.company == stockTab && r.product === prod);
-    const retQtyStock = retItems.reduce((s,r) => s + (r.qty||0), 0);
-
-    // মোট স্টক = ক্রয় + ম্যানুয়াল + ফেরত - বিক্রয়
-    const totalIn = purQty + manQty + retQtyStock;
+    // মোট স্টক = ক্রয় + ম্যানুয়াল - বিক্রয়
+    const totalIn = purQty + manQty;
     const stock = totalIn - saleQty;
 
     // স্টক মূল্য
@@ -2390,22 +2277,11 @@ function renderStock() {
         ? '<span class="badge badge-amber">⚠️ কম</span>'
         : '<span class="badge badge-green">✅ আছে</span>';
 
-    const prodEncoded = encodeURIComponent(prod);
     return `<tr>
       <td><strong>${prod}</strong></td>
-      <td class="text-right text-blue">
-        ${fmtNum(purQty)}
-        ${purQty>0?`<button class="btn btn-primary btn-sm" style="padding:2px 7px;font-size:10px;margin-left:4px;" onclick="viewStockDetail('purchase','${prodEncoded}',${stockTab})">ভিউ</button>`:''}
-      </td>
-      <td class="text-right text-amber">
-        ${fmtNum(manQty)}
-        ${manQty>0?`<button class="btn btn-primary btn-sm" style="padding:2px 7px;font-size:10px;margin-left:4px;" onclick="viewStockDetail('manual','${prodEncoded}',${stockTab})">ভিউ</button>`:''}
-      </td>
-      <td class="text-right" style="color:#7c3aed;">${retQtyStock > 0 ? fmtNum(retQtyStock) : '-'}</td>
-      <td class="text-right">
-        ${fmtNum(saleQty)}
-        ${saleQty>0?`<button class="btn btn-primary btn-sm" style="padding:2px 7px;font-size:10px;margin-left:4px;" onclick="viewStockDetail('sale','${prodEncoded}',${stockTab})">ভিউ</button>`:''}
-      </td>
+      <td class="text-right text-blue">${fmtNum(purQty)}</td>
+      <td class="text-right text-amber">${fmtNum(manQty)}</td>
+      <td class="text-right">${fmtNum(saleQty)}</td>
       <td class="text-right fw-bold ${stock<=0?'text-red':stock<5?'text-amber':'text-green'}">${fmtNum(Math.max(0,stock))}</td>
       <td>${unit}</td>
       <td class="text-right">${avgRate>0?fmt(avgRate):'-'}</td>
@@ -2414,90 +2290,6 @@ function renderStock() {
       <td>${status}</td>
     </tr>`;
   }).join('') : `<tr><td colspan="10"><div class="empty-state"><div class="icon">🏭</div><p>কোনো স্টক তথ্য নেই। ক্রয় করুন বা ম্যানুয়াল স্টক যোগ করুন।</p></div></td></tr>`;
-}
-
-
-// ===== STOCK VIEW DETAIL =====
-function viewStockDetail(type, prodEncoded, company) {
-  const prod = decodeURIComponent(prodEncoded);
-  const coName = COMPANIES[company]?.name || '';
-  let title = '';
-  let rows = '';
-
-  if (type === 'purchase') {
-    title = `📦 ক্রয় বিবরণ — ${prod}`;
-    const items = purchases.filter(p => p.company == company && p.product === prod);
-    rows = items.length ? items.map(p => `
-      <tr>
-        <td>${fmtDate(p.date)}</td>
-        <td class="text-right">${fmtNum(p.qty)} ${p.unit||''}</td>
-        <td class="text-right">${fmt(p.rate)}</td>
-        <td class="text-right fw-bold">${fmt((p.qty||0)*(p.rate||0))}</td>
-        <td>${p.supplier||'-'}</td>
-      </tr>`).join('') : '<tr><td colspan="5" class="text-center">কোনো ডাটা নেই</td></tr>';
-    document.getElementById('stock-view-content').innerHTML = `
-      <p style="color:#6b7280;margin-bottom:12px;">${coName}</p>
-      <table style="width:100%;border-collapse:collapse;">
-        <thead><tr style="background:#f3f4f6;">
-          <th style="padding:8px;text-align:left;">তারিখ</th>
-          <th style="padding:8px;text-align:right;">পরিমাণ</th>
-          <th style="padding:8px;text-align:right;">দর (৳)</th>
-          <th style="padding:8px;text-align:right;">মোট (৳)</th>
-          <th style="padding:8px;text-align:left;">সরবরাহকারী</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
-  } else if (type === 'manual') {
-    title = `🏭 ম্যানুয়াল স্টক — ${prod}`;
-    const items = manualStock.filter(m => m.company == company && m.product === prod);
-    rows = items.length ? items.map(m => `
-      <tr>
-        <td>${fmtDate(m.date)}</td>
-        <td class="text-right">${fmtNum(m.qty)} ${m.unit||''}</td>
-        <td class="text-right">${m.rate?fmt(m.rate):'-'}</td>
-        <td>${m.note||'-'}</td>
-      </tr>`).join('') : '<tr><td colspan="4" class="text-center">কোনো ডাটা নেই</td></tr>';
-    document.getElementById('stock-view-content').innerHTML = `
-      <p style="color:#6b7280;margin-bottom:12px;">${coName}</p>
-      <table style="width:100%;border-collapse:collapse;">
-        <thead><tr style="background:#f3f4f6;">
-          <th style="padding:8px;text-align:left;">তারিখ</th>
-          <th style="padding:8px;text-align:right;">পরিমাণ</th>
-          <th style="padding:8px;text-align:right;">দর (৳)</th>
-          <th style="padding:8px;text-align:left;">নোট</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
-  } else if (type === 'sale') {
-    title = `💰 বিক্রয় বিবরণ — ${prod}`;
-    const saleMemos = memos.filter(m => m.company == company && m.products.some(p => p.name === prod));
-    rows = saleMemos.length ? saleMemos.map(m => {
-      const p = m.products.find(p => p.name === prod);
-      return `<tr>
-        <td>${fmtDate(m.date)}</td>
-        <td>${m.memoNo||'-'}</td>
-        <td>${m.customer}</td>
-        <td class="text-right">${fmtNum(p?.qty||0)} ${p?.unit||''}</td>
-        <td class="text-right">${fmt(p?.rate||0)}</td>
-        <td class="text-right fw-bold">${fmt((p?.qty||0)*(p?.rate||0))}</td>
-      </tr>`;}).join('') : '<tr><td colspan="6" class="text-center">কোনো ডাটা নেই</td></tr>';
-    document.getElementById('stock-view-content').innerHTML = `
-      <p style="color:#6b7280;margin-bottom:12px;">${coName}</p>
-      <table style="width:100%;border-collapse:collapse;">
-        <thead><tr style="background:#f3f4f6;">
-          <th style="padding:8px;text-align:left;">তারিখ</th>
-          <th style="padding:8px;text-align:left;">মেমো নং</th>
-          <th style="padding:8px;text-align:left;">গ্রাহক</th>
-          <th style="padding:8px;text-align:right;">পরিমাণ</th>
-          <th style="padding:8px;text-align:right;">দর (৳)</th>
-          <th style="padding:8px;text-align:right;">মোট (৳)</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
-  }
-
-  document.getElementById('stock-view-title').textContent = title;
-  document.getElementById('stock-view-modal').classList.add('open');
 }
 
 // ===== PROFIT =====
@@ -2548,31 +2340,23 @@ function renderReceivable() {
   memos.forEach(m => {
     if (m.baki <= 0) return;
     const key = `${m.mobile||m.customer}_${m.company}`;
-    if (!map[key]) map[key] = { customer:m.customer, mobile:m.mobile||'-', company:m.company, totalSale:0, totalBaki:0, date:m.date, isManual:false };
+    if (!map[key]) map[key] = { customer:m.customer, mobile:m.mobile||'-', company:m.company, totalSale:0, totalBaki:0, date:m.date };
     map[key].totalSale += m.total||0;
     map[key].totalBaki += m.baki||0;
     if (m.date > map[key].date) map[key].date = m.date;
   });
 
-  // Add manual bakis to the map
-  manualBakis.forEach(b => {
-    const key = `${b.mobile||b.customer}_${b.company}`;
-    if (!map[key]) map[key] = { customer:b.customer, mobile:b.mobile||'-', company:b.company, totalSale:0, totalBaki:0, date:b.date, isManual:true, manualId:b.id };
-    map[key].totalBaki += b.amount||0;
-    if (b.date > map[key].date) map[key].date = b.date;
-  });
-
   let rows = Object.values(map).map(r => {
-    const paid = payments.filter(p=>(p.mobile===r.mobile || p.mobile===r.mobile) && p.company==r.company).reduce((s,p)=>s+(p.amount||0),0);
+    const paid = payments.filter(p=>p.mobile===r.mobile && p.company==r.company).reduce((s,p)=>s+(p.amount||0),0);
     return { ...r, paid, balance: Math.max(0, r.totalBaki - paid) };
   }).filter(r => r.balance > 0);
 
-  if (search) rows = rows.filter(r=>r.customer.toLowerCase().includes(search)||(r.mobile||'').includes(search));
+  if (search) rows = rows.filter(r=>r.customer.toLowerCase().includes(search)||r.mobile.includes(search));
   if (filterCo!=='') rows = rows.filter(r=>r.company==filterCo);
 
   document.getElementById('recv-tbody').innerHTML = rows.length ? rows.map(r=>`
     <tr>
-      <td><strong>${r.customer}</strong>${r.isManual ? ' <span style="font-size:10px;background:#e0e7ff;color:#4f46e5;padding:1px 6px;border-radius:8px;">ম্যানুয়াল</span>' : ''}</td>
+      <td><strong>${r.customer}</strong></td>
       <td>${r.mobile}</td>
       <td><span style="background:${getCompanyColor(r.company)}20;color:${getCompanyColor(r.company)};border:1px solid ${getCompanyColor(r.company)}60;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600">${COMPANIES[r.company]?.short}</span></td>
       <td>${fmtDate(r.date)}</td>
@@ -2582,7 +2366,6 @@ function renderReceivable() {
       <td style="display:flex;gap:6px;">
         <button class="btn btn-primary btn-sm" onclick="viewCustomerDetails('${r.customer}','${r.mobile}',${r.company})">👁️ ভিউ</button>
         <button class="btn btn-success btn-sm" onclick="quickCollect('${r.customer}','${r.mobile}',${r.company},${r.balance})">💳 নিন</button>
-        ${r.isManual && isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deleteManualBaki(${r.manualId})">🗑️</button>` : ''}
       </td>
     </tr>`).join('') : `<tr><td colspan="8"><div class="empty-state"><div class="icon">✅</div><p>কোনো বাকি নেই!</p></div></td></tr>`;
 }
@@ -2771,14 +2554,6 @@ function loadCustomerList() {
     map[key].baki += m.baki||0;
   });
 
-  // Manual bakis also in the list
-  manualBakis.forEach(b => {
-    if (co!=='' && b.company!=co) return;
-    const key = `${b.mobile||b.customer}_${b.company}`;
-    if (!map[key]) map[key] = { customer:b.customer, mobile:b.mobile||'', company:b.company, baki:0 };
-    map[key].baki += b.amount||0;
-  });
-
   const rows = Object.values(map).map(r => {
     const paid = payments.filter(p=>p.mobile===r.mobile && p.company==r.company).reduce((s,p)=>s+(p.amount||0),0);
     return { ...r, balance: Math.max(0,r.baki-paid) };
@@ -2807,7 +2582,6 @@ function savePayment() {
     amount,
     note: document.getElementById('pay-note').value.trim(),
   };
-  pay.time = new Date().toLocaleTimeString('bn-BD', {hour:'2-digit', minute:'2-digit'});
   payments.push(pay);
   saveData('payments',payments);
   closeModal('payment-modal');
@@ -2822,10 +2596,7 @@ function renderPaymentList() {
       <td style="color:${getCompanyColor(p.company)};font-size:11px">${COMPANIES[parseInt(p.company)]?.short||'-'}</td>
       <td class="text-right text-green fw-bold">${fmt(p.amount)}</td>
       <td>${p.note||'-'}</td>
-      <td style="display:flex;gap:6px;">
-        <button class="btn btn-primary btn-sm" onclick="viewPaymentDetail(${p.id})">👁️ ভিউ</button>
-        ${isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deletePayment(${p.id})">🗑️</button>` : ''}
-      </td>
+      <td>${isAdmin() ? `<button class="btn btn-danger btn-sm" onclick="deletePayment(${p.id})">🗑️</button>` : '-'}</td>
     </tr>`).join('') || `<tr><td colspan="7"><div class="empty-state"><div class="icon">💳</div><p>কোনো পেমেন্ট নেই</p></div></td></tr>`;
 }
 function deletePayment(id) {
@@ -2834,45 +2605,6 @@ function deletePayment(id) {
   payments = payments.filter(p=>p.id!==id);
   saveData('payments',payments);
   renderPaymentList();
-}
-
-
-// ===== PAYMENT VIEW =====
-function viewPaymentDetail(id) {
-  const p = payments.find(x => x.id === id);
-  if (!p) return;
-  const coName = COMPANIES[parseInt(p.company)]?.name || '-';
-  const coColor = getCompanyColor(p.company);
-  document.getElementById('payment-view-content').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      <div style="grid-column:1/-1;background:linear-gradient(135deg,${coColor}15,${coColor}05);border:1px solid ${coColor}30;border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:13px;color:#6b7280;margin-bottom:4px;">পরিশোধকৃত টাকা</div>
-        <div style="font-size:36px;font-weight:800;color:#059669;">৳ ${p.amount?.toLocaleString('bn-BD')}</div>
-      </div>
-      <div style="background:#f9fafb;border-radius:10px;padding:12px;">
-        <div style="font-size:11px;color:#9ca3af;margin-bottom:4px;">গ্রাহকের নাম</div>
-        <div style="font-size:15px;font-weight:700;">${p.customer}</div>
-      </div>
-      <div style="background:#f9fafb;border-radius:10px;padding:12px;">
-        <div style="font-size:11px;color:#9ca3af;margin-bottom:4px;">মোবাইল</div>
-        <div style="font-size:15px;font-weight:700;">${p.mobile||'-'}</div>
-      </div>
-      <div style="background:#f9fafb;border-radius:10px;padding:12px;">
-        <div style="font-size:11px;color:#9ca3af;margin-bottom:4px;">কোম্পানি</div>
-        <div style="font-size:14px;font-weight:700;color:${coColor};">${coName}</div>
-      </div>
-      <div style="background:#f9fafb;border-radius:10px;padding:12px;">
-        <div style="font-size:11px;color:#9ca3af;margin-bottom:4px;">তারিখ ও সময়</div>
-        <div style="font-size:14px;font-weight:700;">${fmtDate(p.date)}</div>
-        <div style="font-size:12px;color:#6b7280;margin-top:2px;">${p.time || new Date(p.id).toLocaleTimeString('bn-BD', {hour:'2-digit',minute:'2-digit'})}</div>
-      </div>
-      ${p.note ? `<div style="grid-column:1/-1;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:12px;">
-        <div style="font-size:11px;color:#9ca3af;margin-bottom:4px;">নোট</div>
-        <div style="font-size:14px;">${p.note}</div>
-      </div>` : ''}
-    </div>
-  `;
-  document.getElementById('payment-view-modal').classList.add('open');
 }
 
 // ===== SUPPLIER PAY =====
@@ -3010,335 +2742,26 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); });
 });
 
-
-// ===== MANUAL BAKI =====
-function openManualBakiModal() {
-  document.getElementById('mb-date').value = today();
-  document.getElementById('mb-company').value = currentCompany;
-  document.getElementById('mb-customer').value = '';
-  document.getElementById('mb-mobile').value = '';
-  document.getElementById('mb-address').value = '';
-  document.getElementById('mb-amount').value = '';
-  document.getElementById('mb-note').value = '';
-  document.getElementById('manual-baki-modal').classList.add('open');
-}
-
-function saveManualBaki() {
-  const customer = document.getElementById('mb-customer').value.trim();
-  const amount = parseFloat(document.getElementById('mb-amount').value) || 0;
-  if (!customer) { alert('গ্রাহকের নাম লিখুন!'); return; }
-  if (!amount) { alert('বাকির পরিমাণ লিখুন!'); return; }
-  const entry = {
-    id: Date.now(),
-    company: parseInt(document.getElementById('mb-company').value),
-    date: document.getElementById('mb-date').value,
-    customer,
-    mobile: document.getElementById('mb-mobile').value.trim() || '-',
-    address: document.getElementById('mb-address').value.trim(),
-    amount,
-    note: document.getElementById('mb-note').value.trim(),
-  };
-  manualBakis.push(entry);
-  saveData('manualBakis', manualBakis);
-  closeModal('manual-baki-modal');
-  renderReceivable();
-  alert('✅ বাকি যোগ হয়েছে!');
-}
-
-function deleteManualBaki(id) {
-  if (!isAdmin()) { alert('⛔ ডিলিট করার অনুমতি নেই!'); return; }
-  if (!confirm('এই ম্যানুয়াল বাকি মুছে ফেলতে চান?')) return;
-  manualBakis = manualBakis.filter(b => b.id !== id);
-  saveData('manualBakis', manualBakis);
-  renderReceivable();
-}
-
-
-// ===== MEMO EDIT + পণ্য ফেরত =====
-let editingMemoId = null;
-
-function openMemoEditModal(id) {
-  const m = memos.find(x => x.id === id);
-  if (!m) return;
-  editingMemoId = id;
-  document.getElementById('medit-memo-no').textContent = m.memoNo;
-  document.getElementById('medit-customer').textContent = m.customer;
-  document.getElementById('medit-date').textContent = fmtDate(m.date);
-
-  const tbody = document.getElementById('medit-products-tbody');
-  tbody.innerHTML = m.products.map((p, i) => `
-    <tr id="medit-row-${i}">
-      <td style="padding:6px 8px;">${p.name}</td>
-      <td style="padding:6px 8px;">${p.unit||''}</td>
-      <td style="padding:6px 8px;">
-        <input type="number" style="width:80px;padding:4px;border:1px solid #ddd;border-radius:6px;" 
-          id="medit-qty-${i}" value="${p.qty}" min="0" max="${p.qty}" 
-          oninput="updateMemoEditTotal()">
-      </td>
-      <td style="padding:6px 8px;" class="text-right">${fmt(p.rate)}</td>
-      <td style="padding:6px 8px;" class="text-right" id="medit-sub-${i}">${fmt(p.qty*p.rate)}</td>
-      <td style="padding:6px 8px;color:#dc2626;font-size:12px;" id="medit-ret-${i}">-</td>
-    </tr>`).join('');
-
-  updateMemoEditTotal();
-  document.getElementById('memo-edit-modal').classList.add('open');
-}
-
-function updateMemoEditTotal() {
-  const m = memos.find(x => x.id === editingMemoId);
-  if (!m) return;
-  let newTotal = 0;
-  let returnTotal = 0;
-  m.products.forEach((p, i) => {
-    const newQty = parseFloat(document.getElementById(`medit-qty-${i}`)?.value) || 0;
-    const retQty = p.qty - newQty;
-    const sub = newQty * p.rate;
-    const retAmt = retQty * p.rate;
-    newTotal += sub;
-    returnTotal += retAmt;
-    if (document.getElementById(`medit-sub-${i}`)) 
-      document.getElementById(`medit-sub-${i}`).textContent = fmt(sub);
-    if (document.getElementById(`medit-ret-${i}`))
-      document.getElementById(`medit-ret-${i}`).textContent = retQty > 0 ? `ফেরত: ${retQty}` : '-';
-  });
-  newTotal += (m.labor || 0);
-  document.getElementById('medit-new-total').textContent = fmt(newTotal);
-  document.getElementById('medit-return-amt').textContent = fmt(returnTotal);
-}
-
-function saveMemoEdit() {
-  const m = memos.find(x => x.id === editingMemoId);
-  if (!m) return;
-  let hasReturn = false;
-
-  m.products.forEach((p, i) => {
-    const newQty = parseFloat(document.getElementById(`medit-qty-${i}`)?.value) || 0;
-    const retQty = p.qty - newQty;
-    if (retQty > 0) {
-      hasReturn = true;
-      // ফেরত স্টকে যোগ করো
-      returnedStock.push({
-        id: Date.now() + i,
-        company: m.company,
-        product: p.name,
-        unit: p.unit || '',
-        qty: retQty,
-        rate: p.rate,
-        date: today(),
-        memoNo: m.memoNo,
-        customer: m.customer,
-      });
-      p.qty = newQty;
-    }
-  });
-
-  // মেমো টোটাল রিক্যালকুলেট
-  const productTotal = m.products.reduce((s, p) => s + p.qty * p.rate, 0);
-  m.productTotal = productTotal;
-  m.total = productTotal + (m.labor || 0) - (m.advance || 0);
-  m.baki = Math.max(0, m.total - (m.advance || 0));
-  m.edited = true;
-
-  saveData('memos', memos);
-  if (hasReturn) saveData('returnedStock', returnedStock);
-
-  closeModal('memo-edit-modal');
-  renderMemoList();
-  renderStock();
-  alert('✅ মেমো আপডেট হয়েছে!' + (hasReturn ? ' ফেরত পণ্য স্টকে যোগ হয়েছে।' : ''));
-}
-
-// ===== PURCHASE EDIT =====
-let editingPurId = null;
-
-function openPurchaseEdit(id) {
-  const p = purchases.find(x => x.id === id);
-  if (!p) return;
-  editingPurId = id;
-  document.getElementById('pur-edit-company').value = p.company;
-  document.getElementById('pur-edit-date').value = p.date;
-  document.getElementById('pur-edit-product').value = p.product;
-  document.getElementById('pur-edit-unit').value = p.unit;
-  document.getElementById('pur-edit-qty').value = p.qty;
-  document.getElementById('pur-edit-rate').value = p.rate;
-  document.getElementById('pur-edit-supplier').value = p.supplier || '';
-  document.getElementById('pur-edit-note').value = p.note || '';
-  document.getElementById('purchase-edit-modal').classList.add('open');
-}
-
-function savePurchaseEdit() {
-  const p = purchases.find(x => x.id === editingPurId);
-  if (!p) return;
-  p.company = parseInt(document.getElementById('pur-edit-company').value);
-  p.date = document.getElementById('pur-edit-date').value;
-  p.product = document.getElementById('pur-edit-product').value.trim();
-  p.unit = document.getElementById('pur-edit-unit').value;
-  p.qty = parseFloat(document.getElementById('pur-edit-qty').value) || 0;
-  p.rate = parseFloat(document.getElementById('pur-edit-rate').value) || 0;
-  p.supplier = document.getElementById('pur-edit-supplier').value.trim();
-  p.note = document.getElementById('pur-edit-note').value.trim();
-  saveData('purchases', purchases);
-  closeModal('purchase-edit-modal');
-  renderPurchase();
-  renderStock();
-  alert('✅ ক্রয় আপডেট হয়েছে!');
-}
-
-// ===== সকল রিপোর্ট + লেজার =====
-function renderAllReports() {
-  const tab = document.getElementById('allrep-tab')?.value || 'summary';
-  if (tab === 'summary') renderAllRepSummary();
-  else if (tab === 'ledger') renderLedger();
-}
-
-function renderAllRepSummary() {
-  const co = parseInt(document.getElementById('allrep-company')?.value ?? 0);
-  const cPur = purchases.filter(p => p.company === co);
-  const cMemos = memos.filter(m => m.company === co);
-
-  // Item-wise purchase
-  const purMap = {};
-  cPur.forEach(p => {
-    if (!purMap[p.product]) purMap[p.product] = {qty:0, total:0, count:0};
-    purMap[p.product].qty += p.qty;
-    purMap[p.product].total += p.qty * p.rate;
-    purMap[p.product].count++;
-  });
-
-  // Item-wise sale
-  const saleMap = {};
-  cMemos.forEach(m => {
-    m.products.forEach(p => {
-      if (!saleMap[p.name]) saleMap[p.name] = {qty:0, total:0, count:0};
-      saleMap[p.name].qty += p.qty;
-      saleMap[p.name].total += p.qty * p.rate;
-      saleMap[p.name].count++;
-    });
-  });
-
-  const allProducts = [...new Set([...Object.keys(purMap), ...Object.keys(saleMap)])];
-
-  document.getElementById('allrep-content').innerHTML = `
-    <h3 style="margin-bottom:12px;color:#4f46e5;">${COMPANIES[co]?.name} — আইটেম রিপোর্ট</h3>
-    <div style="overflow-x:auto;">
-    <table style="width:100%;border-collapse:collapse;font-size:13px;">
-      <thead><tr style="background:#f3f4f6;">
-        <th style="padding:10px 12px;text-align:left;">পণ্যের নাম</th>
-        <th style="padding:10px 12px;text-align:right;">ক্রয় পরিমাণ</th>
-        <th style="padding:10px 12px;text-align:right;">ক্রয় মূল্য (৳)</th>
-        <th style="padding:10px 12px;text-align:right;">ক্রয় বার</th>
-        <th style="padding:10px 12px;text-align:right;">বিক্রয় পরিমাণ</th>
-        <th style="padding:10px 12px;text-align:right;">বিক্রয় মূল্য (৳)</th>
-        <th style="padding:10px 12px;text-align:right;">বিক্রয় বার</th>
-      </tr></thead>
-      <tbody>
-        ${allProducts.map(prod => {
-          const pur = purMap[prod] || {qty:0,total:0,count:0};
-          const sale = saleMap[prod] || {qty:0,total:0,count:0};
-          return `<tr style="border-bottom:1px solid #f3f4f6;">
-            <td style="padding:9px 12px;font-weight:600;">${prod}</td>
-            <td style="padding:9px 12px;text-align:right;color:#2563eb;">${pur.qty > 0 ? fmtNum(pur.qty) : '-'}</td>
-            <td style="padding:9px 12px;text-align:right;color:#2563eb;">${pur.total > 0 ? fmt(pur.total) : '-'}</td>
-            <td style="padding:9px 12px;text-align:right;">${pur.count > 0 ? pur.count + ' বার' : '-'}</td>
-            <td style="padding:9px 12px;text-align:right;color:#059669;">${sale.qty > 0 ? fmtNum(sale.qty) : '-'}</td>
-            <td style="padding:9px 12px;text-align:right;color:#059669;">${sale.total > 0 ? fmt(sale.total) : '-'}</td>
-            <td style="padding:9px 12px;text-align:right;">${sale.count > 0 ? sale.count + ' বার' : '-'}</td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table></div>`;
-}
-
-function renderLedger() {
-  const co = parseInt(document.getElementById('allrep-company')?.value ?? 0);
-  
-  // Customer ledger (পাওনাদার)
-  const custMap = {};
-  memos.filter(m => m.company === co && m.baki > 0).forEach(m => {
-    const key = m.mobile || m.customer;
-    if (!custMap[key]) custMap[key] = {name: m.customer, mobile: m.mobile||'-', baki: 0};
-    custMap[key].baki += m.baki;
-  });
-  manualBakis.filter(b => b.company === co).forEach(b => {
-    const key = b.mobile || b.customer;
-    if (!custMap[key]) custMap[key] = {name: b.customer, mobile: b.mobile||'-', baki: 0};
-    custMap[key].baki += b.amount;
-  });
-  // minus payments
-  payments.filter(p => p.company === co).forEach(p => {
-    const key = p.mobile || p.customer;
-    if (custMap[key]) custMap[key].baki -= p.amount;
-  });
-
-  // Supplier ledger (দেনাদার)
-  const supMap = {};
-  purchases.filter(p => p.company === co).forEach(p => {
-    const key = p.supplier || 'অজানা';
-    if (!supMap[key]) supMap[key] = {name: key, total: 0, paid: 0};
-    supMap[key].total += p.qty * p.rate;
-  });
-  supplierPays.filter(s => s.company === co).forEach(s => {
-    const key = s.supplier || 'অজানা';
-    if (!supMap[key]) supMap[key] = {name: key, total: 0, paid: 0};
-    supMap[key].paid += s.amount;
-  });
-
-  const custRows = Object.values(custMap).filter(c => c.baki > 0);
-  const supRows = Object.values(supMap).map(s => ({...s, due: Math.max(0, s.total - s.paid)})).filter(s => s.due > 0);
-
-  document.getElementById('allrep-content').innerHTML = `
-    <h3 style="margin-bottom:16px;color:#4f46e5;">${COMPANIES[co]?.name} — খতিয়ান (Ledger)</h3>
-    
-    <div style="margin-bottom:24px;">
-      <h4 style="color:#dc2626;margin-bottom:10px;">📋 পাওনাদার (যাদের কাছে টাকা পাওয়া যাবে)</h4>
-      ${custRows.length ? `<table style="width:100%;border-collapse:collapse;font-size:13px;">
-        <thead><tr style="background:#fef2f2;">
-          <th style="padding:8px 12px;text-align:left;">গ্রাহকের নাম</th>
-          <th style="padding:8px 12px;text-align:left;">মোবাইল</th>
-          <th style="padding:8px 12px;text-align:right;color:#dc2626;">বাকি (৳)</th>
-        </tr></thead>
-        <tbody>${custRows.map(c => `<tr style="border-bottom:1px solid #fecaca;">
-          <td style="padding:8px 12px;font-weight:600;">${c.name}</td>
-          <td style="padding:8px 12px;">${c.mobile}</td>
-          <td style="padding:8px 12px;text-align:right;color:#dc2626;font-weight:700;">${fmt(c.baki)}</td>
-        </tr>`).join('')}
-        <tr style="background:#fef2f2;font-weight:700;">
-          <td colspan="2" style="padding:8px 12px;">মোট পাওনা</td>
-          <td style="padding:8px 12px;text-align:right;color:#dc2626;">${fmt(custRows.reduce((s,c)=>s+c.baki,0))}</td>
-        </tr></tbody>
-      </table>` : '<p style="color:#9ca3af;">কোনো পাওনাদার নেই</p>'}
-    </div>
-
-    <div>
-      <h4 style="color:#d97706;margin-bottom:10px;">🏭 দেনাদার (সরবরাহকারীকে যা দিতে হবে)</h4>
-      ${supRows.length ? `<table style="width:100%;border-collapse:collapse;font-size:13px;">
-        <thead><tr style="background:#fffbeb;">
-          <th style="padding:8px 12px;text-align:left;">সরবরাহকারী</th>
-          <th style="padding:8px 12px;text-align:right;">মোট ক্রয়</th>
-          <th style="padding:8px 12px;text-align:right;">পরিশোধ</th>
-          <th style="padding:8px 12px;text-align:right;color:#d97706;">বাকি (৳)</th>
-        </tr></thead>
-        <tbody>${supRows.map(s => `<tr style="border-bottom:1px solid #fde68a;">
-          <td style="padding:8px 12px;font-weight:600;">${s.name}</td>
-          <td style="padding:8px 12px;text-align:right;">${fmt(s.total)}</td>
-          <td style="padding:8px 12px;text-align:right;color:#059669;">${fmt(s.paid)}</td>
-          <td style="padding:8px 12px;text-align:right;color:#d97706;font-weight:700;">${fmt(s.due)}</td>
-        </tr>`).join('')}
-        <tr style="background:#fffbeb;font-weight:700;">
-          <td colspan="3" style="padding:8px 12px;">মোট দেনা</td>
-          <td style="padding:8px 12px;text-align:right;color:#d97706;">${fmt(supRows.reduce((s,r)=>s+r.due,0))}</td>
-        </tr></tbody>
-      </table>` : '<p style="color:#9ca3af;">কোনো দেনাদার নেই</p>'}
-    </div>`;
-}
-
 // ===== INIT =====
 document.getElementById('current-date').textContent = new Date().toLocaleDateString('bn-BD', {year:'numeric',month:'long',day:'numeric'});
-// Set today for custom supplier date
 const cseDateEl = document.getElementById('cse-date');
 if (cseDateEl) cseDateEl.value = today();
-checkSession();
-addProductRow();
+
+// Firebase ready হলে load করো, না হলে event এর জন্য wait করো
+if (window._fbReady) {
+  loadAllDataFromFirebase();
+} else {
+  window.addEventListener('firebaseReady', () => {
+    loadAllDataFromFirebase();
+  });
+  // ৫ সেকেন্ডের মধ্যে Firebase না আসলে localStorage দিয়ে শুরু করো
+  setTimeout(() => {
+    if (!_fbLoaded) {
+      console.warn('Firebase timeout, falling back to localStorage');
+      window.dispatchEvent(new Event('firebaseReady'));
+    }
+  }, 5000);
+}
 </script>
 </body>
 </html>
