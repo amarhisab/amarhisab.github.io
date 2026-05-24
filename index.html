@@ -397,30 +397,30 @@ tr:hover td { background: #eef2ff; }
 .divider { height: 2px; background: linear-gradient(90deg, #c7d2fe, #e0e7ff, transparent); margin: 10px 0; border-radius: 2px; }
 
 /* MEMO PRODUCT ROWS */
-.memo-products { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.memo-products { display: flex; flex-direction: column; gap: 5px; margin: 8px 0; }
 .memo-product-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 24px;
-  gap: 6px;
+  grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.8fr 20px;
+  gap: 4px;
   align-items: center;
   background: #f0f4ff;
   border: 1.5px solid #c7d2fe;
   border-radius: var(--radius2);
-  padding: 8px;
+  padding: 5px 6px;
   transition: border-color 0.15s;
 }
 .memo-product-row:hover { border-color: #a5b4fc; }
 .memo-product-row input, .memo-product-row select {
   background: #f8f9ff;
   border: 1.5px solid #c7d2fe;
-  border-radius: 6px;
-  padding: 6px 8px;
-  font-size: 13px;
+  border-radius: 5px;
+  padding: 4px 6px;
+  font-size: 12px;
   color: #1e1b4b;
   font-family: 'Hind Siliguri', sans-serif;
   width: 100%;
 }
-.memo-product-row input:focus, .memo-product-row select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.10); }
+.memo-product-row input:focus, .memo-product-row select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.10); }
 .remove-row-btn {
   background: none;
   border: none;
@@ -782,7 +782,7 @@ tr:hover td { background: #eef2ff; }
         <div class="divider"></div>
         <div class="section-title">🛒 পণ্যের তালিকা</div>
 
-        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 24px;gap:6px;padding:4px 8px;margin-bottom:4px;">
+        <div style="display:grid;grid-template-columns:2fr 0.8fr 0.8fr 0.8fr 0.8fr 20px;gap:4px;padding:4px 6px;margin-bottom:2px;">
           <span style="font-size:10px;color:#6366f1;font-weight:600;">পণ্যের নাম</span>
           <span style="font-size:10px;color:#6366f1;font-weight:600;">পরিমাণ</span>
           <span style="font-size:10px;color:#6366f1;font-weight:600;">একক</span>
@@ -797,79 +797,73 @@ tr:hover td { background: #eef2ff; }
         <div class="divider"></div>
 
         <!-- ══ হিসাব সারসংক্ষেপ ══ -->
-        <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start;">
 
           <!-- Input fields (left) -->
-          <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:10px;background:#f8f9ff;border:1.5px solid #c7d2fe;border-radius:12px;padding:16px;">
+          <div style="display:flex;flex-direction:column;gap:8px;background:#f8f9ff;border:1.5px solid #c7d2fe;border-radius:12px;padding:12px;">
             <div class="form-group">
-              <label>লেবার / পরিবহন চার্জ (৳)</label>
-              <input type="number" class="form-control" id="memo-labor" placeholder="0" oninput="calcMemoTotal()">
+              <label style="font-size:11px;">লেবার / পরিবহন চার্জ (৳)</label>
+              <input type="number" style="background:#f8f9ff;border:1.5px solid #c7d2fe;border-radius:6px;padding:5px 8px;font-size:13px;color:#1e1b4b;font-family:'Hind Siliguri',sans-serif;width:100%;max-width:220px;" id="memo-labor" placeholder="0" oninput="calcMemoTotal()">
             </div>
             <div class="form-group">
-              <label>পণ্য রিটার্ন (৳) — <span style="color:var(--red);font-size:11px;">থাকলে বিয়োগ হবে</span></label>
-              <input type="number" class="form-control" id="memo-return" placeholder="0" oninput="calcMemoTotal()" style="border-color:#fca5a5;">
+              <label style="font-size:11px;">পণ্য রিটার্ন (৳) — <span style="color:var(--red);font-size:10px;">থাকলে বিয়োগ হবে</span></label>
+              <input type="number" style="background:#f8f9ff;border:1.5px solid #fca5a5;border-radius:6px;padding:5px 8px;font-size:13px;color:#1e1b4b;font-family:'Hind Siliguri',sans-serif;width:100%;max-width:220px;" id="memo-return" placeholder="0" oninput="calcMemoTotal()">
             </div>
             <div class="form-group">
-              <label>জমা / অগ্রিম (৳)</label>
-              <input type="number" class="form-control" id="memo-advance" placeholder="0" oninput="calcMemoTotal()" style="border-color:#6ee7b7;">
+              <label style="font-size:11px;">জমা / অগ্রিম (৳)</label>
+              <input type="number" style="background:#f8f9ff;border:1.5px solid #6ee7b7;border-radius:6px;padding:5px 8px;font-size:13px;color:#1e1b4b;font-family:'Hind Siliguri',sans-serif;width:100%;max-width:220px;" id="memo-advance" placeholder="0" oninput="calcMemoTotal()">
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px;">
+              <button class="btn btn-ghost" onclick="clearMemo()">🗑️ ক্লিয়ার করুন</button>
+              <button class="btn btn-primary" onclick="submitMemo()">✅ মেমো সেভ করুন</button>
             </div>
           </div>
 
-          <!-- Summary box (right) -->
-          <div style="min-width:280px;background:#ffffff;border:2px solid #c7d2fe;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(79,70,229,0.10);">
+          <!-- Summary box (right) — sticky center of page -->
+          <div style="position:sticky;top:16px;background:#ffffff;border:2px solid #c7d2fe;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(79,70,229,0.10);">
 
-            <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);padding:12px 16px;font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.6px;">
+            <div style="background:linear-gradient(135deg,#4f46e5,#6366f1);padding:10px 14px;font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.6px;">
               💰 হিসাব সারসংক্ষেপ
             </div>
 
-            <!-- row 1: পণ্যের মোট -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--text2);">① পণ্যের মোট</span>
-              <span id="t-product" style="font-size:14px;font-weight:700;color:var(--text);">৳ ০</span>
+            <!-- row 1 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--text2);">① পণ্যের মোট</span>
+              <span id="t-product" style="font-size:13px;font-weight:700;color:var(--text);">৳ ০</span>
             </div>
-
-            <!-- row 2: লেবার চার্জ -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--text2);">② লেবার / পরিবহন (+)</span>
-              <span id="t-labor" style="font-size:14px;font-weight:700;color:var(--accent);">৳ ০</span>
+            <!-- row 2 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--text2);">② লেবার / পরিবহন (+)</span>
+              <span id="t-labor" style="font-size:13px;font-weight:700;color:var(--accent);">৳ ০</span>
             </div>
-
-            <!-- row 3: মোট টাকা (product + labor) -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(91,155,255,0.06);">
-              <span style="font-size:16px;font-weight:800;color:var(--text);">③ মোট টাকা</span>
-              <span id="t-gross" style="font-size:15px;font-weight:700;color:var(--accent);">৳ ০</span>
+            <!-- row 3 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(91,155,255,0.06);">
+              <span style="font-size:14px;font-weight:800;color:var(--text);">③ মোট টাকা</span>
+              <span id="t-gross" style="font-size:14px;font-weight:700;color:var(--accent);">৳ ০</span>
             </div>
-
-            <!-- row 4: রিটার্ন (বিয়োগ) -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--red);">④ রিটার্ন (−)</span>
-              <span id="t-return" style="font-size:14px;font-weight:700;color:var(--red);">৳ ০</span>
+            <!-- row 4 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--red);">④ রিটার্ন (−)</span>
+              <span id="t-return" style="font-size:13px;font-weight:700;color:var(--red);">৳ ০</span>
             </div>
-
-            <!-- row 5: মোট টাকা after return -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:2px solid var(--border2);background:rgba(91,155,255,0.06);">
-              <span style="font-size:16px;font-weight:800;color:var(--text);">⑤ মোট টাকা (রিটার্নের পর)</span>
-              <span id="t-total" style="font-size:15px;font-weight:700;color:var(--text);">৳ ০</span>
+            <!-- row 5 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:2px solid var(--border2);background:rgba(91,155,255,0.06);">
+              <span style="font-size:13px;font-weight:800;color:var(--text);">⑤ মোট (রিটার্নের পর)</span>
+              <span id="t-total" style="font-size:14px;font-weight:700;color:var(--text);">৳ ০</span>
             </div>
-
-            <!-- row 6: জমা -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);">
-              <span style="font-size:13px;color:var(--green);">⑥ জমা / অগ্রিম (−)</span>
-              <span id="t-advance" style="font-size:14px;font-weight:700;color:var(--green);">৳ ০</span>
+            <!-- row 6 -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);">
+              <span style="font-size:12px;color:var(--green);">⑥ জমা / অগ্রিম (−)</span>
+              <span id="t-advance" style="font-size:13px;font-weight:700;color:var(--green);">৳ ০</span>
             </div>
-
-            <!-- row 7: বাকি (FINAL) -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:rgba(255,107,107,0.08);" id="baki-row">
-              <span style="font-size:14px;font-weight:700;" id="baki-label">⑦ বাকি</span>
-              <span id="t-baki" style="font-size:18px;font-weight:800;color:var(--red);">৳ ০</span>
+            <!-- row 7: বাকি FINAL -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:rgba(255,107,107,0.08);" id="baki-row">
+              <span style="font-size:13px;font-weight:700;" id="baki-label">⑦ বাকি</span>
+              <span id="t-baki" style="font-size:17px;font-weight:800;color:var(--red);">৳ ০</span>
             </div>
           </div>
         </div>
 
-        <div style="display:flex;gap:10px;margin-top:16px;justify-content:flex-end;">
-          <button class="btn btn-ghost" onclick="clearMemo()">🗑️ ক্লিয়ার করুন</button>
-          <button class="btn btn-primary" onclick="submitMemo()">✅ মেমো সেভ করুন</button>
-        </div>
       </div>
 
       <!-- ===== MEMO LIST ===== -->
@@ -3342,3 +3336,6 @@ addProductRow();
 </script>
 </body>
 </html>
+
+
+
